@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Horsemen | Saturday Picks',
-  description: 'The weekly college football pick club for Daniel, Erik, Johnny, Michael and Drew.',
+  description:
+    'The weekly college football pick club for Daniel, Erik, Johnny, Michael and Drew.',
 };
 
 export default function RootLayout({

@@ -1,20 +1,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-// Load the pure calculation module after stripping its JSON import for Node's test runtime.
-const source = readFileSync(
-  new URL('../lib/league.ts', import.meta.url),
-  'utf8',
-).replace(
-  "import imported from './history.json';",
-  `const imported=${readFileSync(new URL('../lib/history.json', import.meta.url), 'utf8')};`,
-);
+// Load pure settlement calculations without pulling any client-visible historical data.
+const source = readFileSync(new URL('../lib/league.ts', import.meta.url), 'utf8');
 const { stripTypeScriptTypes } = await import('node:module');
 const mod = await import(
   'data:text/javascript;base64,' +
     Buffer.from(stripTypeScriptTypes(source)).toString('base64')
 );
-const { historical, balance, settlement } = mod;
+const { balance, settlement } = mod;
+const historical = JSON.parse(
+  readFileSync(new URL('../lib/history.json', import.meta.url), 'utf8'),
+);
 const audit = JSON.parse(
   readFileSync(new URL('../lib/history-audit.json', import.meta.url), 'utf8'),
 );

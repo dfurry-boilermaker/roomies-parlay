@@ -1,6 +1,6 @@
-import { getChatGPTUser } from '@/app/chatgpt-auth';
+import { session } from '@/db/auth';
 import { database } from '@/db/store';
-import { historical, type League, type Pick } from '@/lib/league';
+import { type League, type Pick } from '@/lib/league';
 export const dynamic = 'force-dynamic';
 const json = (data: unknown, status = 200) =>
   Response.json(data, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -10,14 +10,9 @@ async function read() {
     .bind('club')
     .first<{ data: string; revision: number }>();
 }
-function member(l: League, u: { userId: string; email: string }) {
-  return l.owner === u.userId
-    ? 0
-    : l.emails.findIndex((e) => e !== '' && e === u.email.toLowerCase());
-}
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const u = await getChatGPTUser();
+    const u = await session(req);
     if (!u)
       return json({
         identity: {
@@ -38,15 +33,10 @@ export async function GET() {
         },
       });
     const l: League = JSON.parse(row.data);
-    const i = member(l, u);
-    if (i < 0)
-      return json(
-        { error: 'Daniel needs to add your account email to the league.' },
-        403,
-      );
-    const admin = l.owner === u.userId;
+    const i = u.id;
+    const admin = i === 0;
     return json({
-      league: { ...l, owner: '', emails: admin ? l.emails : [] },
+      league: { ...l, owner: '', emails: [] },
       identity: { admin, index: i, initialized: true, signedIn: true },
     });
   } catch {
@@ -58,36 +48,20 @@ export async function POST(req: Request) {
     const origin = req.headers.get('origin');
     if (origin && origin !== new URL(req.url).origin)
       return json({ error: 'Request origin is not allowed.' }, 403);
-    const u = await getChatGPTUser();
+    const u = await session(req);
     if (!u) return json({ error: 'Sign in first.' }, 401);
     if (Number(req.headers.get('content-length') || 0) > 20000)
       return json({ error: 'Request too large.' }, 413);
-    const b = (await req.json()) as Record<string, unknown>;
+    if (!req.headers.get('content-type')?.startsWith('application/json'))
+      return json({ error: 'Expected JSON.' }, 415);
+    const raw = await req.text();
+    if (raw.length > 20000) return json({ error: 'Request too large.' }, 413);
+    const b = JSON.parse(raw) as Record<string, unknown>;
     const row = await read();
-    if (b.action === 'initialize') {
-      if (u.email.toLowerCase() !== 'danielfurry22@gmail.com') return json({error:'Only Daniel can initialize this league.'},403);
-      if (row)
-        return json({ error: 'The league is already initialized.' }, 409);
-      const l: League = {
-        owner: u.userId,
-        emails: [u.email.toLowerCase(), '', '', '', ''],
-        weeks: historical,
-      };
-      await database()
-        .prepare('INSERT INTO league_state (id,data,revision) VALUES (?,?,0)')
-        .bind('club', JSON.stringify(l))
-        .run();
-      return json({ ok: true });
-    }
     if (!row) return json({ error: 'Initialize the league first.' }, 409);
     const l: League = JSON.parse(row.data);
-    const i = member(l, u);
-    if (i < 0)
-      return json(
-        { error: 'Only invited members can access this league.' },
-        403,
-      );
-    const admin = l.owner === u.userId;
+    const i = u.id;
+    const admin = i === 0;
     if (b.action !== 'pick' && !admin)
       return json(
         { error: 'Only Daniel can manage results and league settings.' },
@@ -110,22 +84,6 @@ export async function POST(req: Request) {
           400,
         );
       w.picks[i] = { text: b.text.trim(), result: 'pending' };
-    } else if (b.action === 'invite') {
-      if (!Array.isArray(b.emails) || b.emails.length !== 5)
-        return json({ error: 'Provide the four member emails.' }, 400);
-      const emails = [
-        u.email.toLowerCase(),
-        ...b.emails.slice(1).map((e) => String(e).trim().toLowerCase()),
-      ];
-      if (
-        emails.some((e) => e && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) ||
-        new Set(emails.filter(Boolean)).size !== emails.filter(Boolean).length
-      )
-        return json(
-          { error: 'Use valid, unique emails for each friend.' },
-          400,
-        );
-      l.emails = emails;
     } else if (b.action === 'addWeek') {
       if (
         typeof b.date !== 'string' ||

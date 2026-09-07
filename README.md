@@ -1,6 +1,6 @@
 # Horsemen Pick Club
 
-Shared five-person parlay tracker. React/Vinext on a Cloudflare Worker with D1 persistence and Sites/ChatGPT sign-in. The app records picks, results and payouts; it does not place bets or transfer money.
+Shared five-person parlay tracker. React/Vinext on a Cloudflare Worker with D1 persistence and member PIN/password sign-in. The app records picks, results and payouts; it does not place bets or transfer money.
 
 ## Run
 
@@ -8,7 +8,13 @@ Shared five-person parlay tracker. React/Vinext on a Cloudflare Worker with D1 p
 
 ## Access
 
-The Site is initially owner-private. Daniel must initialize it while owner-private. The authenticated initializing user becomes commissioner. Do not share an uninitialized site. Configure each friend's ChatGPT email in Manage league, and add those same viewers in Sites sharing. Platform access and the application email allowlist both apply. Other members can only submit their own pick before the commissioner locks a week; only the commissioner may edit results, amounts and members. All writes use a revision check to prevent concurrent overwrites.
+Choose a member name and enter that member’s PIN or password. The app owns authentication; ChatGPT identity is not used. The login page may be public, but all league data is loaded only after a valid member session. Historical data is server-only and absent from public client assets. Member zero (Daniel) is the commissioner; other members can only submit their own pick before the commissioner locks a week.
+
+Starting member credentials come from the secret `INITIAL_MEMBERS` (JSON array of five salt/hash pairs) and separate secret `AUTH_PEPPER`. Both are provisioned outside source control. Passwords use PBKDF2-HMAC-SHA256 (100,000 iterations for the Workers runtime), per-member salts, and a server-side pepper. User-requested four-digit PINs have limited entropy; durable account and IP throttling restrict guessing to five attempts per member in 15 minutes. Members may change to a longer password. Daniel can reset another member’s credential. Changes invalidate all sessions for that member. Session cookies are HttpOnly, SameSite=Strict and Secure over HTTPS; the database stores only token hashes, with 30-day expiration. State mutations reject cross-origin requests and require JSON. All league writes use a revision check to prevent concurrent overwrites.
+
+Store local credentials only in ignored `.dev.vars`; never use the local test PINs in production. `scripts/configure-test-auth.mjs` generates test-only seed credentials; `scripts/auth.integration.mjs` exercises them against a fresh local DB. Do not run that generator over a configured development environment unless intentionally replacing local test credentials. Production credentials and records are separate from local D1 state. There is no public registration or credential recovery bypass. PIN reset for Daniel requires owner-authorized database maintenance.
+
+The Sites audience must allow anonymous access to the login page for friends to use these credentials without an additional platform sign-in. Change platform access only after validating the application gate and obtaining any required publication approval.
 
 ## Settlement
 
@@ -24,4 +30,4 @@ Read-only XLSX export on 2026-09-07; 56 entries from 2022–2025. `lib/history.j
 
 ## Verification
 
-Production build and TypeScript check; arithmetic tests cover source reconciliation, zero through five losers, incomplete weeks and the four-person exception. WebMCP week navigation supports valid and invalid date checking. No broad browser visual QA was requested.
+Production build and TypeScript check; arithmetic tests cover source reconciliation, zero through five losers, incomplete weeks and the four-person exception. WebMCP week navigation supports valid and invalid date checking. HTTP integration checks cover login, member ownership, commissioner authorization, locked picks, origin rejection, password changes, session revocation, password resets, throttling and logout. No broad browser visual QA was requested.

@@ -8,6 +8,13 @@
       "when": 1788809860015,
       "tag": "0000_lean_switch",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788810378249,
+      "tag": "0001_known_patch",
+      "breakpoints": true
     }
   ]
 }

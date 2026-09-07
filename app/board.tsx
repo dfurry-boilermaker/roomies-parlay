@@ -1,4 +1,6 @@
 'use client';
+import SignIn from './sign-in';
+import PasswordSettings from './password-settings';
 import { useEffect, useState } from 'react';
 import {
   Flag,
@@ -28,7 +30,6 @@ import {
 } from '@/components/ui/table';
 import {
   names,
-  historical,
   money,
   balance,
   settlement,
@@ -65,7 +66,7 @@ export default function Board() {
   const [league, setLeague] = useState<League>({
     owner: '',
     emails: [],
-    weeks: historical,
+    weeks: [],
   });
   const [identity, setIdentity] = useState({
     admin: false,
@@ -90,8 +91,9 @@ export default function Board() {
         league?: League;
       };
       if (!r.ok) throw Error(d.error);
+      if(d.league && d.identity.signedIn && !identity.signedIn){const latest=d.league.weeks.at(-1);if(latest){setSeason(latest.date.slice(0,4));setDate(latest.date);}}
       setIdentity(d.identity);
-      if (d.league) setLeague(d.league);
+      setLeague(d.league || { owner: '', emails: [], weeks: [] });
       setLoaded(true);
     } catch (e) {
       setMessage((e as Error).message);
@@ -177,6 +179,8 @@ export default function Board() {
   const seasons = [...new Set(league.weeks.map((w) => w.date.slice(0, 4)))]
     .sort()
     .reverse();
+  if (!loaded || !identity.signedIn)
+    return <SignIn loading={!loaded} onSuccess={refresh} />;
   return (
     <>
       <header className="topbar">
@@ -190,7 +194,31 @@ export default function Board() {
           <span className="dot" /> COLLEGE FOOTBALL
         </span>
         <span className="club-count">
-          <Users size={16} /> 5 members
+          <Users size={16} /> {names[identity.index]}{' '}
+          <button
+            className="text-button"
+            onClick={async () => {
+              const r = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'logout' }),
+              });
+              if (r.ok) {
+                setLeague({ owner: '', emails: [], weeks: [] });
+                setIdentity({
+                  admin: false,
+                  index: -1,
+                  initialized: true,
+                  signedIn: false,
+                });
+                setMessage('');
+                setPick('');
+                setTab('picks');
+              }
+            }}
+          >
+            Sign out
+          </button>
         </span>
       </header>
       <main>
@@ -209,30 +237,6 @@ export default function Board() {
             label="Season"
           />
         </div>
-        {loaded && !identity.initialized && (
-          <div className="notice">
-            <div>
-              <b>Your league is ready to start.</b>
-              <p>
-                2022–2022–2025 history is imported from your sheet. Daniel can
-                initialize the league, then invite the crew.
-              </p>
-            </div>
-            {identity.signedIn ? (
-              <button disabled={busy} onClick={() => mutate('initialize')}>
-                Initialize as Daniel <ArrowUpRight size={16} />
-              </button>
-            ) : (
-              <a
-                className="button"
-                href="/signin-with-chatgpt?return_to=%2F"
-                target="_top"
-              >
-                Sign in to set up <ArrowUpRight size={16} />
-              </a>
-            )}
-          </div>
-        )}
         {message && (
           <p role="status" className="notice small">
             {message}
@@ -268,6 +272,7 @@ export default function Board() {
             <TabsTrigger value="picks">Weekly picks</TabsTrigger>
             <TabsTrigger value="history">Season history</TabsTrigger>
             <TabsTrigger value="balances">Balances & rules</TabsTrigger>
+            <TabsTrigger value="account">My password</TabsTrigger>
             {identity.admin && (
               <TabsTrigger value="manage">Manage league</TabsTrigger>
             )}
@@ -510,6 +515,9 @@ export default function Board() {
               </p>
             </div>
           </TabsContent>
+          <TabsContent value="account">
+            <PasswordSettings onSignedOut={refresh} />
+          </TabsContent>
           <TabsContent value="manage">
             {identity.admin && (
               <>
@@ -542,36 +550,7 @@ export default function Board() {
                       <Plus size={16} /> Add week
                     </button>
                   </form>
-                  <form
-                    className="rules"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      const f = new FormData(e.currentTarget);
-                      mutate('invite', {
-                        emails: names.map((_, i) =>
-                          String(f.get('email' + i) || ''),
-                        ),
-                      });
-                    }}
-                  >
-                    <h3>Invite your crew</h3>
-                    <p>
-                      Enter their ChatGPT account emails. They sign in using the
-                      site link after site sharing is enabled.
-                    </p>
-                    {names.slice(1).map((n, k) => (
-                      <label key={n}>
-                        {n}
-                        <input
-                          name={'email' + (k + 1)}
-                          type="email"
-                          defaultValue={league.emails[k + 1] || ''}
-                          placeholder="friend@example.com"
-                        />
-                      </label>
-                    ))}
-                    <button disabled={busy}>Save members</button>
-                  </form>
+                  <PasswordSettings admin onSignedOut={refresh} />
                 </div>
                 {week && (
                   <form

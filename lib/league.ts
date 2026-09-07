@@ -9,8 +9,6 @@ export type Week = {
   picks: Pick[];
 };
 export type League = { owner: string; emails: string[]; weeks: Week[] };
-import imported from './history.json';
-export const historical = imported as Week[];
 export function settlement(w: Week) {
   const complete = w.picks.every((p) => p.text && p.result !== 'pending');
   const losers = w.picks.filter((p) => p.result === 'loss').length;
