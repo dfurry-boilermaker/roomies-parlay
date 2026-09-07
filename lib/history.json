@@ -1,0 +1,1570 @@
+[
+  {
+    "date": "2022-09-24",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "ND ML",
+        "result": "win"
+      },
+      {
+        "text": "USC -6",
+        "result": "loss"
+      },
+      {
+        "text": "Oregon -6.5",
+        "result": "loss"
+      },
+      {
+        "text": "Florida/Tenn Over 62.5",
+        "result": "win"
+      },
+      {
+        "text": "Cinci -16.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-01",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Texas -9",
+        "result": "win"
+      },
+      {
+        "text": "Arkansas +17.5",
+        "result": "loss"
+      },
+      {
+        "text": "GT/Pitt Over 49",
+        "result": "loss"
+      },
+      {
+        "text": "USC -24.5",
+        "result": "loss"
+      },
+      {
+        "text": "Baylor -2.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-08",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Kansas State -1",
+        "result": "win"
+      },
+      {
+        "text": "SC/Kentucky Over 46.5",
+        "result": "loss"
+      },
+      {
+        "text": "Utah -3.5",
+        "result": "loss"
+      },
+      {
+        "text": "Tennessee -3",
+        "result": "win"
+      },
+      {
+        "text": "Kansas/TCU Under 68.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-09",
+    "buyIn": 2.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Ravens -3",
+        "result": "loss"
+      },
+      {
+        "text": "Over 55.5",
+        "result": "loss"
+      },
+      {
+        "text": "Lamar Jackson TD",
+        "result": "loss"
+      },
+      {
+        "text": "Tyler Boyd O38.5 rec yds",
+        "result": "loss"
+      },
+      {
+        "text": "Joe Mixon O60.5 rush yds",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-10",
+    "buyIn": 2.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Carr O0.5 Interceptions",
+        "result": "loss"
+      },
+      {
+        "text": "CEH O44.5 rush yds",
+        "result": "loss"
+      },
+      {
+        "text": "Carr O279.5 pass yds",
+        "result": "loss"
+      },
+      {
+        "text": "Pacheco O24.5 rush yds",
+        "result": "loss"
+      },
+      {
+        "text": "Hardman O24.5 rec yds",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-15",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Kansas +9",
+        "result": "loss"
+      },
+      {
+        "text": "USC +3.5",
+        "result": "win"
+      },
+      {
+        "text": "Florida -2.5",
+        "result": "loss"
+      },
+      {
+        "text": "USC/Utah O64.5)",
+        "result": "win"
+      },
+      {
+        "text": "Buff/UMass O47",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-22",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Texas/OKST O60.5",
+        "result": "win"
+      },
+      {
+        "text": "Washington/Cal O54.5",
+        "result": "loss"
+      },
+      {
+        "text": "PSU -5.5",
+        "result": "win"
+      },
+      {
+        "text": "Louisville -2.5",
+        "result": "win"
+      },
+      {
+        "text": "Purdue ML",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-29",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "TCU -7.5",
+        "result": "win"
+      },
+      {
+        "text": "CoastCar/Marsh U54.5",
+        "result": "win"
+      },
+      {
+        "text": "Tennessee -11.5",
+        "result": "win"
+      },
+      {
+        "text": "SC -3.5",
+        "result": "loss"
+      },
+      {
+        "text": "OKST ML",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-10-30",
+    "buyIn": 1.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Miles Sanders TD",
+        "result": "win"
+      },
+      {
+        "text": "Peoples Jones TD",
+        "result": "loss"
+      },
+      {
+        "text": "Najee Harris TD",
+        "result": "loss"
+      },
+      {
+        "text": "Marcus Mariota TD",
+        "result": "loss"
+      },
+      {
+        "text": "Taysom Hill TD",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-11-05",
+    "buyIn": 5.0,
+    "payout": 147.77,
+    "locked": true,
+    "picks": [
+      {
+        "text": "UCLA -11",
+        "result": "win"
+      },
+      {
+        "text": "JMU @ The Ville, u52.5",
+        "result": "win"
+      },
+      {
+        "text": "Penn state -13.5",
+        "result": "win"
+      },
+      {
+        "text": "Auburn miss st o50.5",
+        "result": "win"
+      },
+      {
+        "text": "Wisconsin -4.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2022-11-06",
+    "buyIn": 1.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Lazard TD",
+        "result": "win"
+      },
+      {
+        "text": "St. Brown TD",
+        "result": "loss"
+      },
+      {
+        "text": "Boyd TD",
+        "result": "loss"
+      },
+      {
+        "text": "Kyler TD",
+        "result": "win"
+      },
+      {
+        "text": "Waddle TD",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2022-11-12",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Florida/SC O58",
+        "result": "loss"
+      },
+      {
+        "text": "UL Mon/Georgia St U59.5",
+        "result": "win"
+      },
+      {
+        "text": "LSU -3.5",
+        "result": "loss"
+      },
+      {
+        "text": "Georgia -16.5",
+        "result": "win"
+      },
+      {
+        "text": "Vandy/UK Over 46",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-11-19",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "TCU -2.5",
+        "result": "loss"
+      },
+      {
+        "text": "Marshall/GeorgiaS U52.5",
+        "result": "win"
+      },
+      {
+        "text": "Pitt -7.0",
+        "result": "loss"
+      },
+      {
+        "text": "UCLA ML",
+        "result": "loss"
+      },
+      {
+        "text": "Wisco/Nebraska O40.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2022-11-26",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "LSU -10",
+        "result": "loss"
+      },
+      {
+        "text": "App St/GeorgiaS U63",
+        "result": "loss"
+      },
+      {
+        "text": "Pitt -6.5",
+        "result": "win"
+      },
+      {
+        "text": "Vandy ML",
+        "result": "loss"
+      },
+      {
+        "text": "Maryland -14.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2022-12-11",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "AJ Brown TD",
+        "result": "win"
+      },
+      {
+        "text": "David Bell TD",
+        "result": "loss"
+      },
+      {
+        "text": "St. Brown TD",
+        "result": "loss"
+      },
+      {
+        "text": "D'Andre Swift TD",
+        "result": "loss"
+      },
+      {
+        "text": "Jeff Wilson TD",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-09-02",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Purdue -3",
+        "result": "loss"
+      },
+      {
+        "text": "Tulane -6.5",
+        "result": "win"
+      },
+      {
+        "text": "Alabama/MidTenn O51.5",
+        "result": "win"
+      },
+      {
+        "text": "Oklahoma -36",
+        "result": "win"
+      },
+      {
+        "text": "BC/Northern Illinois Under",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-09-09",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "**N/A**",
+        "result": "absent"
+      },
+      {
+        "text": "Texas State +14.5",
+        "result": "win"
+      },
+      {
+        "text": "Colorado -3",
+        "result": "win"
+      },
+      {
+        "text": "Oregon/Texas Tech O68.5",
+        "result": "loss"
+      },
+      {
+        "text": "Notre Dame -7",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2023-09-16",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "MSU/Washington O55.5",
+        "result": "loss"
+      },
+      {
+        "text": "Arkansas -8.5",
+        "result": "loss"
+      },
+      {
+        "text": "TCU -7",
+        "result": "win"
+      },
+      {
+        "text": "Tennessee -5.5",
+        "result": "loss"
+      },
+      {
+        "text": "Minnesota +7",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-09-23",
+    "buyIn": 5.0,
+    "payout": 117.73,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Notre Dame +3.5",
+        "result": "win"
+      },
+      {
+        "text": "Florida St -1.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas -17",
+        "result": "win"
+      },
+      {
+        "text": "Oregon -21",
+        "result": "win"
+      },
+      {
+        "text": "Louisville -13.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2023-09-30",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Michigan/Nebraska O39.5",
+        "result": "win"
+      },
+      {
+        "text": "Arkansas St/Mass U56",
+        "result": "loss"
+      },
+      {
+        "text": "Florida +1.5",
+        "result": "loss"
+      },
+      {
+        "text": "Tennessee -11.5",
+        "result": "win"
+      },
+      {
+        "text": "USC/Colorado U72.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-10-07",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Arizona +21.5",
+        "result": "win"
+      },
+      {
+        "text": "Michigan -18.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas -5.5",
+        "result": "loss"
+      },
+      {
+        "text": "Ole Miss -11.5",
+        "result": "loss"
+      },
+      {
+        "text": "Florida St -23.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-10-14",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Duke -3",
+        "result": "win"
+      },
+      {
+        "text": "Go Cocks -2.5",
+        "result": "loss"
+      },
+      {
+        "text": "James Madison -5.5",
+        "result": "win"
+      },
+      {
+        "text": "Tennessee -3",
+        "result": "win"
+      },
+      {
+        "text": "Rutgers -4.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-10-21",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Mississippi St/Arkansas O",
+        "result": "loss"
+      },
+      {
+        "text": "Akron/BG O37.5",
+        "result": "win"
+      },
+      {
+        "text": "Utah/USC O51.5",
+        "result": "win"
+      },
+      {
+        "text": "ASU/WA O59.5",
+        "result": "loss"
+      },
+      {
+        "text": "Minnesota/Iowa O30.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-10-28",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Florida/Georgia U49",
+        "result": "loss"
+      },
+      {
+        "text": "Ohio/Miami OH O40",
+        "result": "win"
+      },
+      {
+        "text": "Ohio St -14.5",
+        "result": "loss"
+      },
+      {
+        "text": "UNC Spread",
+        "result": "loss"
+      },
+      {
+        "text": "ND Spread",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2023-11-04",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Ole Miss -3 (push/win)",
+        "result": "win"
+      },
+      {
+        "text": "Kansas +2.5",
+        "result": "win"
+      },
+      {
+        "text": "Ohio St -18.5",
+        "result": "win"
+      },
+      {
+        "text": "Ville -9.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas -4.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-11-11",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Georgia -10.5",
+        "result": "win"
+      },
+      {
+        "text": "USC/Oregon O72.5",
+        "result": "loss"
+      },
+      {
+        "text": "Ohio St/Mich St O48",
+        "result": "loss"
+      },
+      {
+        "text": "Michigan -4.5",
+        "result": "win"
+      },
+      {
+        "text": "Temple +7",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2023-11-18",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Washinton/Oregon St Over",
+        "result": "loss"
+      },
+      {
+        "text": "UNC +7.5",
+        "result": "loss"
+      },
+      {
+        "text": "JMU -9.5",
+        "result": "loss"
+      },
+      {
+        "text": "Texas -7.5",
+        "result": "win"
+      },
+      {
+        "text": "Utah ML",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2023-11-25",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Louisville/Kentucky Under",
+        "result": "loss"
+      },
+      {
+        "text": "Florida St -6.5",
+        "result": "win"
+      },
+      {
+        "text": "Louisville -7.5",
+        "result": "loss"
+      },
+      {
+        "text": "Gamecocks spread",
+        "result": "loss"
+      },
+      {
+        "text": "Kansas spread",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-08-31",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "OKST -9.5",
+        "result": "win"
+      },
+      {
+        "text": "Miami/FL O54.5",
+        "result": "win"
+      },
+      {
+        "text": "Penn St -8.5",
+        "result": "win"
+      },
+      {
+        "text": "UNLV/Houston O54.5",
+        "result": "loss"
+      },
+      {
+        "text": "Louisville -36.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-07",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Nebraska -6.5",
+        "result": "win"
+      },
+      {
+        "text": "OKST/Arkansas O61.5",
+        "result": "win"
+      },
+      {
+        "text": "Tennessee -8.5",
+        "result": "win"
+      },
+      {
+        "text": "Syracuse +3",
+        "result": "win"
+      },
+      {
+        "text": "Utah -14.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-14",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "WV/Pitt U61.5",
+        "result": "loss"
+      },
+      {
+        "text": "IU/UCLA O46.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas -35.5",
+        "result": "win"
+      },
+      {
+        "text": "OregonSt +17.5",
+        "result": "loss"
+      },
+      {
+        "text": "Memphis/FLST U53.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-21",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "BC -6.5",
+        "result": "loss"
+      },
+      {
+        "text": "Louisville -10.5",
+        "result": "win"
+      },
+      {
+        "text": "WVU -2",
+        "result": "win"
+      },
+      {
+        "text": "Rocky Top spread",
+        "result": "win"
+      },
+      {
+        "text": "OKST ML",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-28",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "OU ML",
+        "result": "win"
+      },
+      {
+        "text": "Bowling Green -10.5",
+        "result": "loss"
+      },
+      {
+        "text": "Texas -37.5",
+        "result": "loss"
+      },
+      {
+        "text": "WSU/BoiseST O65.5",
+        "result": "win"
+      },
+      {
+        "text": "JMU -21.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-10-05",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "SCarolina +9",
+        "result": "loss"
+      },
+      {
+        "text": "Arkansas/Tenn O57",
+        "result": "loss"
+      },
+      {
+        "text": "Bama -22.5",
+        "result": "loss"
+      },
+      {
+        "text": "Mich/Wash O41",
+        "result": "win"
+      },
+      {
+        "text": "Navy -10",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-10-12",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Oregon +3.5",
+        "result": "win"
+      },
+      {
+        "text": "OhioST/Oregon O53.5",
+        "result": "win"
+      },
+      {
+        "text": "PennSt -3.5",
+        "result": "loss"
+      },
+      {
+        "text": "Pitt -3",
+        "result": "loss"
+      },
+      {
+        "text": "Missouri -27",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-10-19",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Mich/Ill U44.5",
+        "result": "win"
+      },
+      {
+        "text": "Tenn/Bama O57.5",
+        "result": "loss"
+      },
+      {
+        "text": "USC -7",
+        "result": "loss"
+      },
+      {
+        "text": "Georgia +4",
+        "result": "win"
+      },
+      {
+        "text": "Texas A&M -21",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-10-26",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Minnesota -5",
+        "result": "win"
+      },
+      {
+        "text": "JMU/SMiss U54.5",
+        "result": "win"
+      },
+      {
+        "text": "PennSt -6.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas -1.5",
+        "result": "win"
+      },
+      {
+        "text": "Georgia Tech +11",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-02",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Pitt/SMU O56.5",
+        "result": "win"
+      },
+      {
+        "text": "CC/Troy U 52.5",
+        "result": "loss"
+      },
+      {
+        "text": "PennSt +3.5",
+        "result": "loss"
+      },
+      {
+        "text": "K State -13.5",
+        "result": "loss"
+      },
+      {
+        "text": "Georgia -14.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-09",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "UGA/Ole Miss U55",
+        "result": "win"
+      },
+      {
+        "text": "BYU -3",
+        "result": "loss"
+      },
+      {
+        "text": "Boise St -24",
+        "result": "loss"
+      },
+      {
+        "text": "CO/TT Over",
+        "result": "win"
+      },
+      {
+        "text": "Bama/LSU Under",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-16",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "IowaSt -7",
+        "result": "win"
+      },
+      {
+        "text": "OSU/NW O 43.5",
+        "result": "loss"
+      },
+      {
+        "text": "Pitt/Clem O52",
+        "result": "loss"
+      },
+      {
+        "text": "UGA/Tenn U47",
+        "result": "loss"
+      },
+      {
+        "text": "MichSt/Ill O48",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-23",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "ASU/BYU O49",
+        "result": "win"
+      },
+      {
+        "text": "Colorado -2.5",
+        "result": "loss"
+      },
+      {
+        "text": "SMU -11",
+        "result": "win"
+      },
+      {
+        "text": "Mizz/miss st O58",
+        "result": "win"
+      },
+      {
+        "text": "Iowa/Maryland U41",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-30",
+    "buyIn": 5.0,
+    "payout": 148.01,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Texas -5.5",
+        "result": "win"
+      },
+      {
+        "text": "SC +2.5",
+        "result": "win"
+      },
+      {
+        "text": "Florida -16.5",
+        "result": "win"
+      },
+      {
+        "text": "ORE/WASH O50.5",
+        "result": "win"
+      },
+      {
+        "text": "Louiseville/UK O49.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-08-30",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Tulane -4.5",
+        "result": "win"
+      },
+      {
+        "text": "Bama/FSU u48.5",
+        "result": "win"
+      },
+      {
+        "text": "Tennessee -13.5",
+        "result": "win"
+      },
+      {
+        "text": "ASU -28.5",
+        "result": "loss"
+      },
+      {
+        "text": "Kentucky -9.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-06",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Illinois -2.5",
+        "result": "win"
+      },
+      {
+        "text": "Mich/okla u44.5",
+        "result": "win"
+      },
+      {
+        "text": "Ole Miss -8.5",
+        "result": "loss"
+      },
+      {
+        "text": "ASU/miss st o58.5",
+        "result": "loss"
+      },
+      {
+        "text": "Michigan +5.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-13",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "ND -6.5",
+        "result": "loss"
+      },
+      {
+        "text": "UGA/Tenn U50.5",
+        "result": "loss"
+      },
+      {
+        "text": "Clemson -3",
+        "result": "loss"
+      },
+      {
+        "text": "LSU -7.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas Tech -23.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-20",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Tulane/OleMiss Over",
+        "result": "loss"
+      },
+      {
+        "text": "Oklahoma -7",
+        "result": "push"
+      },
+      {
+        "text": "Ore/OreSt Over",
+        "result": "loss"
+      },
+      {
+        "text": "Michigan/Nebraska Under",
+        "result": "loss"
+      },
+      {
+        "text": "Baylor -2.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-27",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Kansas -4.5",
+        "result": "loss"
+      },
+      {
+        "text": "Oregon -1.5",
+        "result": "win"
+      },
+      {
+        "text": "OSU -8.5",
+        "result": "win"
+      },
+      {
+        "text": "USC/ILL Over",
+        "result": "win"
+      },
+      {
+        "text": "ND/Arkansas Over",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-04",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Penn St -24.5",
+        "result": "loss"
+      },
+      {
+        "text": "UNLV/Wyoming U49.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas Tech -12.5",
+        "result": "win"
+      },
+      {
+        "text": "Minnesota spread",
+        "result": "win"
+      },
+      {
+        "text": "Louisville -6.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-11",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Oregon/IU Over 53.5",
+        "result": "loss"
+      },
+      {
+        "text": "OU/Texas U45.5",
+        "result": "win"
+      },
+      {
+        "text": "Iowa St -2.5",
+        "result": "loss"
+      },
+      {
+        "text": "ILL spread",
+        "result": "loss"
+      },
+      {
+        "text": "Penn St / NW Over",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-18",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Flordia/MissSt U 51.5",
+        "result": "win"
+      },
+      {
+        "text": "Tenn/Bama under",
+        "result": "win"
+      },
+      {
+        "text": "GT +3.5",
+        "result": "win"
+      },
+      {
+        "text": "Tennessee +9.5",
+        "result": "loss"
+      },
+      {
+        "text": "TCU -2.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-25",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "BYU ML",
+        "result": "win"
+      },
+      {
+        "text": "Oklahoma -5.5",
+        "result": "loss"
+      },
+      {
+        "text": "GT -16.5",
+        "result": "win"
+      },
+      {
+        "text": "Texas -7.5",
+        "result": "loss"
+      },
+      {
+        "text": "Wake Forest +3.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-01",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Cincy/Utah O 55.5",
+        "result": "win"
+      },
+      {
+        "text": "PennSt/OhioSt U 44.5",
+        "result": "loss"
+      },
+      {
+        "text": "Vandy ML",
+        "result": "loss"
+      },
+      {
+        "text": "ND/BC O 55.5",
+        "result": "loss"
+      },
+      {
+        "text": "Miami/SMU U 50.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-08",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "TexasA&M/Mizzou O48.5",
+        "result": "win"
+      },
+      {
+        "text": "Iowa +6.5",
+        "result": "win"
+      },
+      {
+        "text": "Washington -10.5",
+        "result": "loss"
+      },
+      {
+        "text": "Vandy -6.5",
+        "result": "win"
+      },
+      {
+        "text": "Maryland +2.5",
+        "result": "loss"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-15",
+    "buyIn": 5.0,
+    "payout": 0.0,
+    "locked": true,
+    "picks": [
+      {
+        "text": "SDSU -1.5",
+        "result": "win"
+      },
+      {
+        "text": "TexasA&M -17.5",
+        "result": "loss"
+      },
+      {
+        "text": "ND -12.5",
+        "result": "win"
+      },
+      {
+        "text": "Alabama -6",
+        "result": "loss"
+      },
+      {
+        "text": "Penn State -7",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-22",
+    "buyIn": 5.0,
+    "payout": 139.51,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Pitt/GT O59.5",
+        "result": "win"
+      },
+      {
+        "text": "BYU -2.5",
+        "result": "win"
+      },
+      {
+        "text": "OSU -28.5",
+        "result": "win"
+      },
+      {
+        "text": "Kansas State +17.5",
+        "result": "win"
+      },
+      {
+        "text": "Oregon -10.5",
+        "result": "win"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-29",
+    "buyIn": 5.0,
+    "payout": 162.67,
+    "locked": true,
+    "picks": [
+      {
+        "text": "Miami -6.5",
+        "result": "win"
+      },
+      {
+        "text": "Bama/Auburn O46.5",
+        "result": "win"
+      },
+      {
+        "text": "Hawaii -7.5",
+        "result": "win"
+      },
+      {
+        "text": "Florida -1.5",
+        "result": "win"
+      },
+      {
+        "text": "Clemson +2.5",
+        "result": "win"
+      }
+    ]
+  }
+]
