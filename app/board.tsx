@@ -274,12 +274,6 @@ export default function Board() {
             )}
           </TabsList>
           <TabsContent value="picks">
-            <div className="section-title">
-              <div>
-                <p className="eyebrow">THE WEEKLY TICKET</p>
-                <h2>Five picks. All in.</h2>
-              </div>
-            </div>
             {week ? (
               <>
                 <div className="ticket">
