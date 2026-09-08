@@ -305,9 +305,17 @@ main {
   padding: 0 2px !important;
   height: 47px !important;
   border-radius: 0;
+  background: transparent;
+  border-color: transparent;
   color: #687871;
 }
+.navtabs button:hover {
+  background: transparent;
+  color: #174e3e;
+  filter: none;
+}
 .navtabs button[data-active] {
+  background: transparent;
   color: #174e3e;
 }
 .section-title {
