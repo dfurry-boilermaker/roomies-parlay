@@ -395,7 +395,7 @@ export default function Board() {
                     <p>
                       {week.picks.every((p) => p.result === 'win')
                         ? 'A clean sweep. Every horse came home.'
-                        : 'Payouts are recorded by Daniel after the games.'}
+                        : 'GitHub Actions grades final scores on Sunday and rechecks Monday; losing-week charges update automatically.'}
                     </p>
                     <Trophy className="trophy" size={58} />
                   </div>
