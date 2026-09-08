@@ -227,11 +227,9 @@ export default function Board() {
       <main>
         <div className="page-title">
           <div>
-            <p className="eyebrow">FIVE FRIENDS. ONE SATURDAY TRADITION.</p>
             <h1>
               Saturday’s on the line<span>.</span>
             </h1>
-            <p className="muted">Your picks, your crew, your season.</p>
           </div>
           <Choice
             value={season}
