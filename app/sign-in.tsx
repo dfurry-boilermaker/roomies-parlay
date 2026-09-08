@@ -52,7 +52,7 @@ export default function SignIn({
           src="/horsemen-icon.png"
           alt="Roomies Parlay"
         />
-        ROOMIES<span className="brand-sub">PARLAY</span>
+        Roomies Parlay
       </a>
       <div className="login-card">
         <div className="login-badge">

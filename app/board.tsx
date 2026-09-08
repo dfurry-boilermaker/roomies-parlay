@@ -191,7 +191,7 @@ export default function Board() {
             src="/horsemen-icon.png"
             alt="Roomies Parlay"
           />
-          ROOMIES<span className="brand-sub">PARLAY</span>
+          Roomies Parlay
         </a>
         <span className="header-note">
           <span className="dot" /> COLLEGE FOOTBALL
