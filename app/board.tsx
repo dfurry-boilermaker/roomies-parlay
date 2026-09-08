@@ -322,7 +322,9 @@ export default function Board() {
                         <span className={'result ' + p.result}>
                           {p.result === 'win' ? <Check size={14} /> : null}
                           {p.result === 'pending'
-                            ? 'Awaiting result'
+                            ? p.text
+                              ? 'Awaiting result'
+                              : 'Awaiting pick'
                             : p.result === 'absent'
                               ? 'Did not play'
                               : p.result === 'push'
@@ -472,7 +474,11 @@ export default function Board() {
                           <span>{p.text || 'No pick entered'}</span>
                         </span>
                         <span className={'result ' + p.result}>
-                          {p.result === 'pending' ? 'Pending' : p.result}
+                          {p.result === 'pending'
+                            ? p.text
+                              ? 'Awaiting result'
+                              : 'Awaiting pick'
+                            : p.result}
                         </span>
                       </div>
                     ))}
