@@ -514,7 +514,6 @@ export default function Board() {
                     {weeks.filter((w) => w.picks[i].result === 'loss').length}{' '}
                     losses
                   </p>
-                  <small>Payouts less losing-week charges</small>
                 </article>
               ))}
             </div>
