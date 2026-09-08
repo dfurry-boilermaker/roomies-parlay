@@ -258,7 +258,7 @@ main {
 }
 .stats {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   background: #fff;
   border: 1px solid #dce4e1;
   border-radius: 10px;
@@ -518,8 +518,10 @@ main {
   background: #fff;
   border: 1px solid #dce4e1;
   border-radius: 9px;
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
+.table-wrap table { min-width: 850px; }
 th {
   background: #edf2ef !important;
   padding: 16px !important;
@@ -656,7 +658,7 @@ footer span:first-child {
 }
 @media (max-width: 640px) {
   main {
-    padding: 28px 16px 0;
+    padding: 24px 14px 0;
   }
   .topbar {
     height: 73px;
@@ -673,7 +675,11 @@ footer span:first-child {
   }
   .page-title {
     align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 22px;
   }
+  .page-title [data-slot='select-trigger'] { min-width: 132px; }
   .page-title .eyebrow {
     font-size: 9px;
     letter-spacing: 1px;
@@ -683,36 +689,47 @@ footer span:first-child {
     letter-spacing: -1.5px;
   }
   .stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 24px;
   }
   .stats > div {
-    padding: 18px 22px;
-    border-right: 0;
-    border-bottom: 1px solid #e0e7e3;
+    padding: 17px 14px;
+    border-right: 1px solid #e0e7e3;
+    border-bottom: 0;
   }
+  .stats > div:last-child { border-right: 0; }
   .stats strong {
-    font-size: 30px;
+    font-size: 25px;
   }
   .navtabs {
-    gap: 17px !important;
+    gap: 22px !important;
     overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
   }
+  .navtabs::-webkit-scrollbar { display: none; }
   .navtabs button {
-    font-size: 12px;
+    font-size: 13px;
+    min-height: 48px;
+    scroll-snap-align: start;
   }
   .pick-grid {
     grid-template-columns: 1fr;
   }
   .pick-card {
     border-right: 0;
-    padding: 20px;
+    padding: 18px;
   }
   .pick-label {
     margin-top: 18px;
   }
   .pick-card h3 {
     min-height: 0;
+    font-size: 18px;
+    margin-bottom: 14px;
   }
+  .pick-card input { min-height: 48px; margin: 12px 0 10px; }
+  .pick-card form button { width: 100%; min-height: 48px; }
   .lower-grid,
   .manage-grid {
     grid-template-columns: 1fr;
@@ -726,7 +743,7 @@ footer span:first-child {
     grid-template-columns: 1fr 1fr;
   }
   .balance-card {
-    padding: 16px;
+    padding: 15px;
   }
   .balance-card strong {
     font-size: 25px;
@@ -737,6 +754,7 @@ footer span:first-child {
   }
   .section-title {
     flex-wrap: wrap;
+    margin: 24px 0 16px;
   }
   .trophy {
     right: 23px;
@@ -744,17 +762,26 @@ footer span:first-child {
   }
   .form-row {
     flex-direction: column;
+    gap: 10px;
   }
   .admin-picks {
     grid-template-columns: 1fr;
   }
   footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 34px;
+    padding: 22px 0;
     letter-spacing: 0;
   }
   .brandmark {
     width: 33px;
     height: 33px;
   }
+  .rules { padding: 18px; }
+  .rules input, .rules button, .rules [data-slot='select-trigger'] { min-height: 46px; }
+  .secondary { margin: 10px 0 0; }
 }
 .login-page {
   min-height: 100svh;
