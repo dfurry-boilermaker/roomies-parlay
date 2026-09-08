@@ -194,9 +194,9 @@ export default function Board() {
           <img
             className="brandmark"
             src="/horsemen-icon.png"
-            alt="Horsemen Pick Club"
+            alt="Roomies Parlay"
           />
-          HORSEMEN<span className="brand-sub">PICK CLUB</span>
+          ROOMIES<span className="brand-sub">PARLAY</span>
         </a>
         <span className="header-note">
           <span className="dot" /> COLLEGE FOOTBALL
@@ -644,7 +644,7 @@ export default function Board() {
         </Tabs>
         <footer>
           <span>
-            <Flag size={14} /> HORSEMEN PICK CLUB
+            <Flag size={14} /> ROOMIES PARLAY
           </span>
           <span>One pick each. Every week.</span>
         </footer>

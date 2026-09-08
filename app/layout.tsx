@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Horsemen | Saturday Picks',
+  title: 'Roomies Parlay',
   description:
-    'The weekly college football pick club for Daniel, Erik, Johnny, Michael and Drew.',
+    'The weekly college football parlay for Daniel, Erik, Johnny, Michael and Drew.',
   icons: {
     icon: '/horsemen-icon.png',
   },

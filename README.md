@@ -1,4 +1,4 @@
-# Horsemen Pick Club
+# Roomies Parlay
 
 Shared five-person parlay tracker. React/Vinext on a Cloudflare Worker with D1 persistence and member PIN/password sign-in. The app records picks, results and payouts; it does not place bets or transfer money.
 

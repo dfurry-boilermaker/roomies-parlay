@@ -50,9 +50,9 @@ export default function SignIn({
         <img
           className="brandmark"
           src="/horsemen-icon.png"
-          alt="Horsemen Pick Club"
+          alt="Roomies Parlay"
         />
-        HORSEMEN<span className="brand-sub">PICK CLUB</span>
+        ROOMIES<span className="brand-sub">PARLAY</span>
       </a>
       <div className="login-card">
         <div className="login-badge">
