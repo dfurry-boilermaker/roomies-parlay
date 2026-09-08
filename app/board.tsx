@@ -424,7 +424,7 @@ export default function Board() {
                 Green = win · Red = loss · Gray = push
               </span>
             </div>
-            <div className="table-wrap">
+            <div className="history-desktop table-wrap">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -464,6 +464,41 @@ export default function Board() {
                   ))}
                 </TableBody>
               </Table>
+            </div>
+            <div className="history-mobile">
+              {weeks.map((w) => (
+                <article className="history-week" key={w.date}>
+                  <div className="history-week-head">
+                    <button
+                      className="date-button"
+                      onClick={() => {
+                        setDate(w.date);
+                        setTab('picks');
+                      }}
+                    >
+                      {new Date(w.date + 'T12:00:00').toLocaleDateString(
+                        'en-US',
+                        { month: 'short', day: 'numeric', year: 'numeric' },
+                      )}
+                    </button>
+                    <strong>{money(w.payout)} <small>/ person</small></strong>
+                  </div>
+                  <div className="history-week-picks">
+                    {w.picks.map((p, i) => (
+                      <div className="history-mobile-pick" key={names[i]}>
+                        <span className={'avatar a' + i}>{names[i][0]}</span>
+                        <span className="history-mobile-copy">
+                          <b>{names[i]}</b>
+                          <span>{p.text || 'No pick entered'}</span>
+                        </span>
+                        <span className={'result ' + p.result}>
+                          {p.result === 'pending' ? 'Pending' : p.result}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              ))}
             </div>
             <p className="footnote">
               Imported directly from your workbook, including hidden 2022–2024

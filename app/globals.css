@@ -545,6 +545,7 @@ td {
   margin-top: 4px;
   opacity: 0.85;
 }
+.history-mobile { display: none; }
 .date-button {
   background: transparent;
   color: #294d3d;
@@ -782,6 +783,56 @@ footer span:first-child {
   .rules { padding: 18px; }
   .rules input, .rules button, .rules [data-slot='select-trigger'] { min-height: 46px; }
   .secondary { margin: 10px 0 0; }
+  .history-desktop { display: none; }
+  .history-mobile {
+    display: grid;
+    gap: 12px;
+  }
+  .history-week {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #dce4e1;
+    border-radius: 9px;
+  }
+  .history-week-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 16px;
+    background: #edf2ef;
+  }
+  .history-week-head .date-button {
+    padding: 6px 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .history-week-head strong {
+    color: #21583e;
+    font-size: 14px;
+  }
+  .history-week-head small { font-size: 11px; color: #66766e; font-weight: 500; }
+  .history-week-picks { padding: 2px 16px; }
+  .history-mobile-pick {
+    display: grid;
+    grid-template-columns: 31px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf1ef;
+  }
+  .history-mobile-pick:last-child { border-bottom: 0; }
+  .history-mobile-pick .avatar { width: 29px; height: 29px; font-size: 12px; }
+  .history-mobile-copy { min-width: 0; display: grid; gap: 3px; }
+  .history-mobile-copy b { font-size: 13px; }
+  .history-mobile-copy span {
+    overflow: hidden;
+    color: #617169;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .history-mobile-pick .result { font-size: 11px; padding: 4px 7px; }
 }
 .login-page {
   min-height: 100svh;
