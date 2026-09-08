@@ -313,7 +313,13 @@ export default function Board() {
                   </div>
                   <div className="pick-grid">
                     {week.picks.map((p, i) => (
-                      <article key={names[i]} className="pick-card">
+                      <article
+                        key={names[i]}
+                        className={
+                          'pick-card ' +
+                          (identity.index === i ? 'my-pick-card' : 'other-pick-card')
+                        }
+                      >
                         <div className="person">
                           <span className={'avatar a' + i}>{names[i][0]}</span>
                           <span>{names[i]}</span>

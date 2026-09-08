@@ -721,6 +721,40 @@ footer span:first-child {
     border-right: 0;
     padding: 18px;
   }
+  .other-pick-card {
+    display: grid;
+    grid-template-columns: minmax(78px, 0.7fr) minmax(0, 1.6fr) auto;
+    align-items: center;
+    column-gap: 10px;
+    min-height: 72px;
+    padding: 13px 16px;
+  }
+  .other-pick-card .pick-label { display: none; }
+  .other-pick-card .person { gap: 6px; font-size: 12px; }
+  .other-pick-card .avatar { width: 27px; height: 27px; font-size: 11px; }
+  .other-pick-card h3 {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .other-pick-card .result { justify-self: end; font-size: 11px; padding: 4px 7px; }
+  .my-pick-card {
+    padding: 20px 18px 22px;
+    background: #fbfdfc;
+  }
+  .my-pick-card .person::after {
+    content: 'YOUR PICK';
+    color: #63776f;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-left: auto;
+  }
+  .my-pick-card .pick-label { margin-top: 20px; }
   .pick-label {
     margin-top: 18px;
   }
