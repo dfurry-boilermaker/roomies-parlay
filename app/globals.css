@@ -703,16 +703,25 @@ footer span:first-child {
     font-size: 25px;
   }
   .navtabs {
-    gap: 22px !important;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px !important;
+    height: auto !important;
+    padding: 8px !important;
+    background: var(--background);
+    border: 1px solid #dce4e1 !important;
+    border-radius: 9px;
   }
-  .navtabs::-webkit-scrollbar { display: none; }
   .navtabs button {
     font-size: 13px;
-    min-height: 48px;
-    scroll-snap-align: start;
+    width: 100%;
+    min-height: 44px;
+    height: 44px !important;
+    padding: 0 5px !important;
+    border-radius: 6px;
   }
   .pick-grid {
     grid-template-columns: 1fr;
