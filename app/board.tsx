@@ -243,15 +243,19 @@ export default function Board() {
             {message}
           </p>
         )}
+        {(() => {
+          const settledWeeks = weeks.filter((w) => settlement(w).complete);
+          return (
         <div className="stats">
           <div>
             <span className="stat-label">PERFECT SATURDAYS</span>
             <strong>
               {
-                weeks.filter((w) => w.picks.every((p) => p.result === 'win'))
-                  .length
+                settledWeeks.filter((w) =>
+                  w.picks.every((p) => p.result === 'win'),
+                ).length
               }
-              <small> / {weeks.length}</small>
+              <small> / {settledWeeks.length}</small>
             </strong>
             <span className="muted">All five picks hit</span>
           </div>
@@ -263,6 +267,8 @@ export default function Board() {
             </span>
           </div>
         </div>
+          );
+        })()}
         <Tabs value={tab} onValueChange={(v) => setTab(String(v))}>
           <TabsList variant="line" className="navtabs">
             <TabsTrigger value="picks">Weekly picks</TabsTrigger>

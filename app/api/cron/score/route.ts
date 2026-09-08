@@ -62,14 +62,31 @@ export async function POST(request: Request) {
       if (settled.complete) week.locked = true;
       report.push({ date: week.date, graded: settled.graded.length, complete: settled.complete });
     }
-    if (report.length) {
+    const now = new Date();
+    const daysUntilSaturday = (6 - now.getUTCDay() + 7) % 7;
+    const nextSaturday = new Date(now);
+    nextSaturday.setUTCDate(now.getUTCDate() + daysUntilSaturday);
+    const nextDate = nextSaturday.toISOString().slice(0, 10);
+    let addedNextWeek = false;
+    if (!league.weeks.some((week) => week.date === nextDate)) {
+      league.weeks.push({
+        date: nextDate,
+        buyIn: 5,
+        payout: 0,
+        locked: false,
+        picks: Array.from({ length: 5 }, () => ({ text: '', result: 'pending' })),
+      });
+      league.weeks.sort((a, b) => a.date.localeCompare(b.date));
+      addedNextWeek = true;
+    }
+    if (report.length || addedNextWeek) {
       const updated = await database()
         .prepare('UPDATE league_state SET data = ?, revision = revision + 1 WHERE id = ? AND revision = ?')
         .bind(JSON.stringify(league), 'club', row.revision)
         .run();
       if (!updated.meta.changes) return json({ error: 'League changed; run again.' }, 409);
     }
-    return json({ ok: true, weeks: report, note: 'Payouts remain the commissioner-entered total because sportsbooks do not expose the parlay payout.' });
+    return json({ ok: true, weeks: report, addedNextWeek, nextWeek: nextDate, note: 'Payouts remain the commissioner-entered total because sportsbooks do not expose the parlay payout.' });
   } catch {
     return json({ error: 'Automatic scoring could not reach the scoreboard.' }, 503);
   }
