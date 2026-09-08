@@ -8,7 +8,12 @@ export type Week = {
   locked: boolean;
   picks: Pick[];
 };
-export type League = { owner: string; emails: string[]; weeks: Week[] };
+export type League = {
+  owner: string;
+  emails: string[];
+  weeks: Week[];
+  notifiedWeeks?: string[];
+};
 export function settlement(w: Week) {
   const complete = w.picks.every((p) => p.text && p.result !== 'pending');
   const losers = w.picks.filter((p) => p.result === 'loss').length;

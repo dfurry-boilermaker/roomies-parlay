@@ -1,0 +1,54 @@
+name: Notify Roomies Parlay
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for a complete current week
+        id: picks
+        env:
+          ROOMIES_CRON_SECRET: ${{ secrets.ROOMIES_CRON_SECRET }}
+        run: |
+          response=$(curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer $ROOMIES_CRON_SECRET" \
+            https://roomies-parlay.danielfurry.chatgpt.site/api/cron/notify)
+          echo "$response" > /tmp/roomies-notify.json
+          if [ "$(jq -r '.shouldNotify' /tmp/roomies-notify.json)" = "true" ]; then
+            echo "should_notify=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_notify=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Send picks by SMS
+        if: steps.picks.outputs.should_notify == 'true'
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
+          ROOMIES_SMS_TO: ${{ secrets.ROOMIES_SMS_TO }}
+        run: |
+          if [ -z "$TWILIO_ACCOUNT_SID" ] || [ -z "$TWILIO_AUTH_TOKEN" ] || [ -z "$TWILIO_FROM_NUMBER" ] || [ -z "$ROOMIES_SMS_TO" ]; then
+            echo "SMS secrets are not configured; skipping notification."
+            exit 0
+          fi
+          date=$(jq -r '.week.date' /tmp/roomies-notify.json)
+          message=$(jq -r '"Roomies Parlay picks for " + .week.date + ":\n" + (.week.picks | map(.name + ": " + .text) | join("\n"))' /tmp/roomies-notify.json)
+          IFS=',' read -ra recipients <<< "$ROOMIES_SMS_TO"
+          for recipient in "${recipients[@]}"; do
+            curl --fail-with-body --silent --show-error \
+              --user "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN" \
+              --data-urlencode "To=$(echo "$recipient" | xargs)" \
+              --data-urlencode "From=$TWILIO_FROM_NUMBER" \
+              --data-urlencode "Body=$message" \
+              "https://api.twilio.com/2010-04-01/Accounts/$TWILIO_ACCOUNT_SID/Messages.json" >/dev/null
+          done
+          curl --fail-with-body --silent --show-error --request POST \
+            --header "Authorization: Bearer ${{ secrets.ROOMIES_CRON_SECRET }}" \
+            --header 'Content-Type: application/json' \
+            --data "{\"date\":\"$date\"}" \
+            https://roomies-parlay.danielfurry.chatgpt.site/api/cron/notify
