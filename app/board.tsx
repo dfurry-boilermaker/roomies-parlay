@@ -446,7 +446,9 @@ export default function Board() {
                         </TableCell>
                       ))}
                       <TableCell>
-                        <b>{money(w.payout)}</b>
+                        {w.picks.every((p) => p.result === 'win') && (
+                          <b>{money(w.payout)}</b>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -463,7 +465,9 @@ export default function Board() {
                         { month: 'short', day: 'numeric', year: 'numeric' },
                       )}
                     </span>
-                    <strong>{money(w.payout)} <small>/ person</small></strong>
+                    {w.picks.every((p) => p.result === 'win') && (
+                      <strong>{money(w.payout)} <small>/ person</small></strong>
+                    )}
                   </div>
                   <div className="history-week-picks">
                     {w.picks.map((p, i) => (
