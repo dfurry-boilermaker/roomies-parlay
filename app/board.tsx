@@ -91,7 +91,13 @@ export default function Board() {
         league?: League;
       };
       if (!r.ok) throw Error(d.error);
-      if(d.league && d.identity.signedIn && !identity.signedIn){const latest=d.league.weeks.at(-1);if(latest){setSeason(latest.date.slice(0,4));setDate(latest.date);}}
+      if (d.league && d.identity.signedIn && !identity.signedIn) {
+        const latest = d.league.weeks.at(-1);
+        if (latest) {
+          setSeason(latest.date.slice(0, 4));
+          setDate(latest.date);
+        }
+      }
       setIdentity(d.identity);
       setLeague(d.league || { owner: '', emails: [], weeks: [] });
       setLoaded(true);
@@ -185,9 +191,11 @@ export default function Board() {
     <>
       <header className="topbar">
         <a className="brand" href="/">
-          <span className="brandmark">
-            <Flag size={22} />
-          </span>
+          <img
+            className="brandmark"
+            src="/horsemen-icon.png"
+            alt="Horsemen Pick Club"
+          />
           HORSEMEN<span className="brand-sub">PICK CLUB</span>
         </a>
         <span className="header-note">

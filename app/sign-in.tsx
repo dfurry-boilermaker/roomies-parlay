@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Flag, ArrowRight, LockKeyhole } from 'lucide-react';
+import { ArrowRight, LockKeyhole } from 'lucide-react';
 import { names } from '@/lib/league';
 import {
   Select,
@@ -47,9 +47,11 @@ export default function SignIn({
   return (
     <div className="login-page">
       <a className="brand" href="/">
-        <span className="brandmark">
-          <Flag size={22} />
-        </span>
+        <img
+          className="brandmark"
+          src="/horsemen-icon.png"
+          alt="Horsemen Pick Club"
+        />
         HORSEMEN<span className="brand-sub">PICK CLUB</span>
       </a>
       <div className="login-card">

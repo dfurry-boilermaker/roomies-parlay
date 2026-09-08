@@ -183,13 +183,13 @@ h3 {
   text-decoration: none;
 }
 .brandmark {
-  display: grid;
-  place-items: center;
-  background: #184e40;
-  color: #fff;
+  display: block;
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 2px solid #e6eee9;
 }
 .brand-sub {
   font-size: 11px;

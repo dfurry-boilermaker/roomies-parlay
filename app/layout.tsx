@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: 'Horsemen | Saturday Picks',
   description:
     'The weekly college football pick club for Daniel, Erik, Johnny, Michael and Drew.',
+  icons: {
+    icon: '/horsemen-icon.png',
+  },
 };
 
 export default function RootLayout({
