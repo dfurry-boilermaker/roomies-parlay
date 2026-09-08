@@ -75,7 +75,6 @@ export default function Board() {
     signedIn: false,
   });
   const [season, setSeason] = useState('2025');
-  const [date, setDate] = useState('2025-11-29');
   const [tab, setTab] = useState('picks');
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
@@ -95,7 +94,6 @@ export default function Board() {
         const latest = d.league.weeks.at(-1);
         if (latest) {
           setSeason(latest.date.slice(0, 4));
-          setDate(latest.date);
         }
       }
       setIdentity(d.identity);
@@ -123,7 +121,7 @@ export default function Board() {
       context.registerTool(
         {
           name: 'view_league_week',
-          description: 'Open an existing parlay week in the league board.',
+          description: 'Open an existing parlay week in season history.',
           inputSchema: {
             type: 'object',
             properties: { date: { type: 'string' } },
@@ -139,9 +137,9 @@ export default function Board() {
             )
               throw Error('Unknown week');
             setSeason(value.slice(0, 4));
-            setDate(value);
-            setTab('picks');
-            return { date: value, view: 'picks' };
+            setSeason(value.slice(0, 4));
+            setTab('history');
+            return { date: value, view: 'history' };
           },
         },
         { signal: abort.signal },
@@ -178,7 +176,7 @@ export default function Board() {
   const weeks = league.weeks.filter(
     (w) => season === 'All time' || w.date.startsWith(season),
   );
-  const week = weeks.find((w) => w.date === date) || weeks.at(-1);
+  const week = league.weeks.at(-1);
   const seasons = [...new Set(league.weeks.map((w) => w.date.slice(0, 4)))]
     .sort()
     .reverse();
@@ -283,12 +281,6 @@ export default function Board() {
                 <p className="eyebrow">THE WEEKLY TICKET</p>
                 <h2>Five picks. All in.</h2>
               </div>
-              <Choice
-                value={week?.date || ''}
-                onChange={setDate}
-                options={weeks.map((w) => w.date).reverse()}
-                label="Week"
-              />
             </div>
             {week ? (
               <>
@@ -444,17 +436,7 @@ export default function Board() {
                 <TableBody>
                   {weeks.map((w) => (
                     <TableRow key={w.date}>
-                      <TableCell>
-                        <button
-                          className="date-button"
-                          onClick={() => {
-                            setDate(w.date);
-                            setTab('picks');
-                          }}
-                        >
-                          {w.date.slice(5)}
-                        </button>
-                      </TableCell>
+                      <TableCell>{w.date.slice(5)}</TableCell>
                       {w.picks.map((p, i) => (
                         <TableCell key={i}>
                           <span className={'history-pick ' + p.result}>
@@ -475,18 +457,12 @@ export default function Board() {
               {weeks.map((w) => (
                 <article className="history-week" key={w.date}>
                   <div className="history-week-head">
-                    <button
-                      className="date-button"
-                      onClick={() => {
-                        setDate(w.date);
-                        setTab('picks');
-                      }}
-                    >
+                    <span className="history-date">
                       {new Date(w.date + 'T12:00:00').toLocaleDateString(
                         'en-US',
                         { month: 'short', day: 'numeric', year: 'numeric' },
                       )}
-                    </button>
+                    </span>
                     <strong>{money(w.payout)} <small>/ person</small></strong>
                   </div>
                   <div className="history-week-picks">
@@ -566,7 +542,6 @@ export default function Board() {
                       e.preventDefault();
                       if (await mutate('addWeek', { date: newDate })) {
                         setSeason(newDate.slice(0, 4));
-                        setDate(newDate);
                         setTab('picks');
                       }
                     }}
