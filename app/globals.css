@@ -315,8 +315,13 @@ main {
   filter: none;
 }
 .navtabs button[data-active] {
-  background: transparent;
+  background: #e8f0eb;
+  border-color: #cdded5;
   color: #174e3e;
+  border-radius: 999px;
+}
+.navtabs button[data-active]::after {
+  opacity: 0 !important;
 }
 .section-title {
   display: flex;
