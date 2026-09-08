@@ -179,9 +179,6 @@ export default function Board() {
     (w) => season === 'All time' || w.date.startsWith(season),
   );
   const week = weeks.find((w) => w.date === date) || weeks.at(-1);
-  const totalPayout = weeks
-    .filter((w) => settlement(w).complete)
-    .reduce((a, w) => a + w.payout, 0);
   const seasons = [...new Set(league.weeks.map((w) => w.date.slice(0, 4)))]
     .sort()
     .reverse();
@@ -251,11 +248,6 @@ export default function Board() {
           </p>
         )}
         <div className="stats">
-          <div>
-            <span className="stat-label">SEASON PAYOUT / PERSON</span>
-            <strong>{money(totalPayout)}</strong>
-            <span className="muted">Before losing-week charges</span>
-          </div>
           <div>
             <span className="stat-label">PERFECT SATURDAYS</span>
             <strong>
