@@ -1,0 +1,19 @@
+name: Score Roomies Parlay
+
+on:
+  schedule:
+    - cron: '15 17 * * 0'
+    - cron: '15 16 * * 1'
+  workflow_dispatch:
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Grade completed college football games
+        env:
+          ROOMIES_CRON_SECRET: ${{ secrets.ROOMIES_CRON_SECRET }}
+        run: |
+          curl --fail-with-body --request POST \
+            --header "Authorization: Bearer $ROOMIES_CRON_SECRET" \
+            https://roomies-parlay.danielfurry.chatgpt.site/api/cron/score

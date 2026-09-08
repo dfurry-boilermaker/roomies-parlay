@@ -26,6 +26,12 @@ https://docs.google.com/spreadsheets/d/1F1arN3qtLVi55WoyE7aPR4fMEKjZvlK5seF5A4tP
 
 Read-only XLSX export on 2026-09-07; 56 entries from 2022–2025. `lib/history.json` retains original pick text and backend loss flags; gray Oklahoma in 2025 is a push, Daniel's 2023 absence is excluded, and 2023 Ole Miss “push/win” remains a win as colored in the original. 2022 NFL parlays and $1/$2 buy-ins are preserved. All 20 year/member balances reconcile with cached source formulas to cents. The workbook's All Time P/L references empty row 24 of 2022 instead of actual totals in row 23, so its all-time amounts exclude 2022. This app includes all entries. Erik's 2025 push is not counted as a win, unlike the manually maintained All Time tally. The empty 2026 template contains 2024 dates and was excluded.
 
+## Automatic scoring
+
+The Sunday and Monday GitHub workflow calls the protected `/api/cron/score` endpoint. It grades completed games from ESPN's public college-football scoreboard for the normal entry styles `Team -3.5` and `Team A/Team B U47.5` (or `O47.5`). It leaves unknown or ambiguous team names pending for Daniel to review. A perfect parlay's payout remains a commissioner-entered amount because the sportsbook payout is not available from final scores.
+
+Set the same random `ROOMIES_CRON_SECRET` value in the Site runtime environment and the GitHub repository's Actions secrets before enabling the workflow.
+
 `lib/history-audit.json` contains reference balances; `scripts/import-history.py` recreates the import from `/tmp/horsemen-history.xlsx` using openpyxl for read-only extraction. Source Google Sheets custom color functions are preserved by importing their cached flags rather than trying to execute them.
 
 ## Verification
