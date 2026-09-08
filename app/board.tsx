@@ -180,6 +180,10 @@ export default function Board() {
   const seasons = [...new Set(league.weeks.map((w) => w.date.slice(0, 4)))]
     .sort()
     .reverse();
+  const standings = names
+    .map((name, index) => ({ name, total: balance(weeks, index) }))
+    .sort((a, b) => b.total - a.total);
+  const leader = standings[0];
   if (!loaded || !identity.signedIn)
     return <SignIn loading={!loaded} onSuccess={refresh} />;
   return (
@@ -260,10 +264,10 @@ export default function Board() {
             <span className="muted">All five picks hit</span>
           </div>
           <div>
-            <span className="stat-label">WEEKLY BUY-IN</span>
-            <strong>{money(week?.buyIn ?? 5)}</strong>
+            <span className="stat-label">SEASON LEADER</span>
+            <strong>{leader?.name || '—'}</strong>
             <span className="muted">
-              {money((week?.buyIn ?? 5) * 5)} split between losing picks
+              {leader ? `${money(leader.total)} total P/L` : 'No settled weeks'}
             </span>
           </div>
         </div>
