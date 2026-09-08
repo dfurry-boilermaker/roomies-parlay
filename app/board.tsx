@@ -500,12 +500,6 @@ export default function Board() {
                 </article>
               ))}
             </div>
-            <p className="footnote">
-              Imported directly from your workbook, including hidden 2022–2024
-              tabs, NFL entries and the four-person week. Pushes and absences
-              are preserved; the green 2023 “push/win” entry retains the sheet’s
-              win classification.
-            </p>
           </TabsContent>
           <TabsContent value="balances">
             <div className="section-title">
