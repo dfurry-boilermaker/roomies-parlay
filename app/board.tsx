@@ -320,7 +320,7 @@ export default function Board() {
                         <p className="pick-label">
                           {p.text ? 'PARLAY LEG' : 'WAITING FOR A PICK'}
                         </p>
-                        <h3>{p.text || 'Your call.'}</h3>
+                        <h3>{p.text || ''}</h3>
                         <span className={'result ' + p.result}>
                           {p.result === 'win' ? <Check size={14} /> : null}
                           {p.result === 'pending'
