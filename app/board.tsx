@@ -440,7 +440,14 @@ export default function Board() {
                 <TableBody>
                   {weeks.map((w) => (
                     <TableRow key={w.date}>
-                      <TableCell>{w.date.slice(5)}</TableCell>
+                      <TableCell>
+                        {season === 'All time'
+                          ? new Date(w.date + 'T12:00:00').toLocaleDateString(
+                              'en-US',
+                              { month: 'short', day: 'numeric', year: 'numeric' },
+                            )
+                          : w.date.slice(5)}
+                      </TableCell>
                       {w.picks.map((p, i) => (
                         <TableCell key={i}>
                           <span className={'history-pick ' + p.result}>
