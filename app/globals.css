@@ -457,6 +457,54 @@ main {
   font-weight: 500;
   color: #315a46;
 }
+.share-trigger {
+  background: #e9f1ec;
+  color: #185447;
+  border-color: #d2e1d8;
+  padding: 8px 11px;
+  font-size: 12px;
+}
+.share-card-panel {
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid #d4e2db;
+  border-radius: 12px;
+  background: #fff;
+}
+.share-card-copy {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.share-card-copy h2 {
+  margin: 7px 0 5px;
+  font-size: 22px;
+}
+.share-card-copy p {
+  color: #65736f;
+  font-size: 14px;
+}
+.share-card-canvas {
+  display: block;
+  width: min(100%, 380px);
+  height: auto;
+  margin: 0 auto;
+  border-radius: 9px;
+  box-shadow: 0 8px 22px rgb(25 62 49 / 14%);
+}
+.share-card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+.share-card-actions .secondary-button {
+  background: #e9f1ec;
+  color: #185447;
+  border-color: #d2e1d8;
+}
 .lower-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

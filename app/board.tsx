@@ -1,13 +1,15 @@
 'use client';
 import SignIn from './sign-in';
 import PasswordSettings from './password-settings';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Flag,
   ArrowUpRight,
   Check,
+  Download,
   Plus,
   LockKeyhole,
+  Share2,
   Trophy,
   Users,
   CalendarDays,
@@ -62,6 +64,134 @@ function Choice({
     </Select>
   );
 }
+
+function ShareCard({
+  week,
+  onClose,
+}: {
+  week: Week;
+  onClose: () => void;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const width = 1080;
+    const height = 1350;
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    context.scale(scale, scale);
+    context.fillStyle = '#123f35';
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = '#e39938';
+    context.beginPath();
+    context.arc(920, 120, 180, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = '#d4e7d2';
+    context.beginPath();
+    context.arc(80, 1270, 240, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = '#f7faf8';
+    context.roundRect(56, 56, 968, 1238, 30);
+    context.fill();
+    context.fillStyle = '#123f35';
+    context.font = '800 60px Arial, sans-serif';
+    context.fillText('ROOMIES PARLAY', 104, 150);
+    context.fillStyle = '#6c7c75';
+    context.font = '700 25px Arial, sans-serif';
+    context.fillText('SATURDAY CARD', 108, 198);
+    context.fillStyle = '#e39938';
+    context.fillRect(108, 230, 130, 8);
+    const date = new Date(week.date + 'T12:00:00').toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    context.fillStyle = '#123f35';
+    context.font = '700 34px Arial, sans-serif';
+    context.fillText(date, 108, 300);
+    context.fillStyle = '#6c7c75';
+    context.font = '500 24px Arial, sans-serif';
+    context.fillText('Five legs. One parlay.', 108, 340);
+    const colors = ['#265846', '#68558c', '#9a7235', '#4b7090', '#9a614f'];
+    week.picks.forEach((pick, index) => {
+      const y = 390 + index * 155;
+      context.fillStyle = '#edf3ef';
+      context.roundRect(96, y, 888, 116, 18);
+      context.fill();
+      context.fillStyle = colors[index];
+      context.beginPath();
+      context.arc(150, y + 58, 29, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = '#fff';
+      context.font = '700 25px Arial, sans-serif';
+      context.textAlign = 'center';
+      context.fillText(names[index][0], 150, y + 67);
+      context.textAlign = 'left';
+      context.fillStyle = '#123f35';
+      context.font = '700 25px Arial, sans-serif';
+      context.fillText(names[index], 204, y + 45);
+      context.fillStyle = pick.text ? '#315a46' : '#8a9891';
+      context.font = '500 28px Arial, sans-serif';
+      context.fillText(pick.text || 'Awaiting pick', 204, y + 82);
+    });
+    context.fillStyle = '#123f35';
+    context.font = '700 24px Arial, sans-serif';
+    context.fillText('roomies-parlay.danielfurry.chatgpt.site', 108, 1260);
+  }, [week]);
+
+  async function share() {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const file = new File([blob], `roomies-parlay-${week.date}.png`, {
+        type: 'image/png',
+      });
+      if (
+        navigator.share &&
+        (!navigator.canShare || navigator.canShare({ files: [file] }))
+      ) {
+        await navigator.share({ title: 'Roomies Parlay picks', files: [file] });
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = file.name;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }, 'image/png');
+  }
+
+  return (
+    <section className="share-card-panel" aria-label="Share picks card">
+      <div className="share-card-copy">
+        <div>
+          <span className="eyebrow">READY FOR THE GROUP CHAT?</span>
+          <h2>Share this week’s card</h2>
+          <p>Export the picks as an image and drop it into iMessage.</p>
+        </div>
+        <button className="text-button" onClick={onClose} aria-label="Close share card">
+          Close
+        </button>
+      </div>
+      <canvas ref={canvasRef} className="share-card-canvas" />
+      <div className="share-card-actions">
+        <button onClick={share} type="button">
+          <Share2 size={16} /> Share image
+        </button>
+        <button className="secondary-button" onClick={share} type="button">
+          <Download size={16} /> Save image
+        </button>
+      </div>
+    </section>
+  );
+}
+
 export default function Board() {
   const [league, setLeague] = useState<League>({
     owner: '',
@@ -80,6 +210,7 @@ export default function Board() {
   const [busy, setBusy] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [pick, setPick] = useState('');
+  const [shareCardOpen, setShareCardOpen] = useState(false);
   const [newDate, setNewDate] = useState('2026-09-12');
   async function refresh() {
     try {
@@ -346,8 +477,10 @@ export default function Board() {
                                   date: week.date,
                                   text: pick,
                                 })
-                              )
+                              ) {
                                 setPick('');
+                                setShareCardOpen(true);
+                              }
                             }}
                           >
                             <label className="sr-only" htmlFor="my-pick">
@@ -374,6 +507,15 @@ export default function Board() {
                       {week.picks.filter((p) => p.text).length} of 5 picks
                       submitted
                     </span>
+                    {week.picks.some((p) => p.text) && (
+                      <button
+                        className="share-trigger"
+                        onClick={() => setShareCardOpen(true)}
+                        type="button"
+                      >
+                        <Share2 size={14} /> Share card
+                      </button>
+                    )}
                     <b>
                       {settlement(week).complete
                         ? `${settlement(week).losers} losing picks · ${money(settlement(week).charge)} per loser`
@@ -381,6 +523,9 @@ export default function Board() {
                     </b>
                   </div>
                 </div>
+                {shareCardOpen && (
+                  <ShareCard week={week} onClose={() => setShareCardOpen(false)} />
+                )}
                 <div className="lower-grid">
                   <div className="payout-card">
                     <span className="eyebrow">THIS WEEK’S PAYOUT</span>
