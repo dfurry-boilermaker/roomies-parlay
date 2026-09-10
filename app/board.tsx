@@ -65,6 +65,61 @@ function Choice({
   );
 }
 
+const teamThemes: Array<[RegExp, string, string, string]> = [
+  [/michigan/i, '#00274c', '#ffcb05', 'M'],
+  [/ohio|osu/i, '#bb0000', '#666666', 'O'],
+  [/alabama|bama/i, '#9e1b32', '#ffffff', 'A'],
+  [/georgia|uga/i, '#ba0c2f', '#000000', 'G'],
+  [/texas(?! tech)/i, '#bf5700', '#ffffff', 'T'],
+  [/texas tech/i, '#cc0000', '#000000', 'TT'],
+  [/clemson/i, '#f56600', '#522d80', 'C'],
+  [/lsu/i, '#461d7c', '#fdd023', 'LSU'],
+  [/notre dame|nd/i, '#0c2340', '#c99700', 'ND'],
+  [/florida/i, '#0021a5', '#fa4616', 'F'],
+  [/tennessee/i, '#ff8200', '#ffffff', 'T'],
+  [/usc|southern california/i, '#990000', '#ffc72c', 'USC'],
+  [/oregon/i, '#154733', '#fee123', 'O'],
+];
+
+function badgeForPick(text: string, index: number) {
+  const theme = teamThemes.find(([pattern]) => pattern.test(text));
+  if (theme) return { bg: theme[1], fg: theme[2], label: theme[3] };
+  const words = text
+    .split(/[\/|]/)[0]
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  const label = words.length > 1
+    ? words.slice(0, 2).map((word) => word[0]).join('').toUpperCase()
+    : (words[0]?.slice(0, 2) || names[index].slice(0, 2)).toUpperCase();
+  const fallbacks = [
+    ['#155e75', '#cffafe'],
+    ['#7c2d12', '#ffedd5'],
+    ['#581c87', '#f3e8ff'],
+    ['#166534', '#dcfce7'],
+    ['#9f1239', '#ffe4e6'],
+  ];
+  return { bg: fallbacks[index % fallbacks.length][0], fg: fallbacks[index % fallbacks.length][1], label };
+}
+
+function roundedRect(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+) {
+  const r = Math.min(radius, width / 2, height / 2);
+  context.beginPath();
+  context.moveTo(x + r, y);
+  context.arcTo(x + width, y, x + width, y + height, r);
+  context.arcTo(x + width, y + height, x, y + height, r);
+  context.arcTo(x, y + height, x, y, r);
+  context.arcTo(x, y, x + width, y, r);
+  context.closePath();
+}
+
 function ShareCard({
   week,
   onClose,
@@ -85,63 +140,82 @@ function ShareCard({
     const context = canvas.getContext('2d');
     if (!context) return;
     context.scale(scale, scale);
-    context.fillStyle = '#123f35';
+    const background = context.createLinearGradient(0, 0, width, height);
+    background.addColorStop(0, '#073b32');
+    background.addColorStop(1, '#176653');
+    context.fillStyle = background;
     context.fillRect(0, 0, width, height);
-    context.fillStyle = '#e39938';
+    context.fillStyle = '#f5a338';
     context.beginPath();
-    context.arc(920, 120, 180, 0, Math.PI * 2);
+    context.arc(960, 100, 230, 0, Math.PI * 2);
     context.fill();
-    context.fillStyle = '#d4e7d2';
+    context.fillStyle = '#b6dfc7';
     context.beginPath();
-    context.arc(80, 1270, 240, 0, Math.PI * 2);
+    context.arc(35, 1300, 260, 0, Math.PI * 2);
     context.fill();
     context.fillStyle = '#f7faf8';
-    context.roundRect(56, 56, 968, 1238, 30);
+    roundedRect(context, 48, 48, 984, 1254, 34);
     context.fill();
     context.fillStyle = '#123f35';
-    context.font = '800 60px Arial, sans-serif';
-    context.fillText('ROOMIES PARLAY', 104, 150);
+    context.font = '900 66px Arial, sans-serif';
+    context.fillText('ROOMIES', 102, 142);
+    context.fillStyle = '#e28f2f';
+    context.fillText('PARLAY', 102, 212);
     context.fillStyle = '#6c7c75';
-    context.font = '700 25px Arial, sans-serif';
-    context.fillText('SATURDAY CARD', 108, 198);
+    context.font = '800 24px Arial, sans-serif';
+    context.fillText('THE WEEKLY CARD', 106, 265);
     context.fillStyle = '#e39938';
-    context.fillRect(108, 230, 130, 8);
+    roundedRect(context, 106, 286, 178, 10, 5);
+    context.fill();
     const date = new Date(week.date + 'T12:00:00').toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
     });
     context.fillStyle = '#123f35';
-    context.font = '700 34px Arial, sans-serif';
-    context.fillText(date, 108, 300);
+    context.font = '800 37px Arial, sans-serif';
+    context.fillText(date, 108, 352);
     context.fillStyle = '#6c7c75';
-    context.font = '500 24px Arial, sans-serif';
-    context.fillText('Five legs. One parlay.', 108, 340);
-    const colors = ['#265846', '#68558c', '#9a7235', '#4b7090', '#9a614f'];
+    context.font = '600 24px Arial, sans-serif';
+    const submitted = week.picks.filter((pick) => pick.text).length;
+    context.fillText(`${submitted}/5 PICKS IN  •  $${week.buyIn} BUY-IN`, 108, 392);
     week.picks.forEach((pick, index) => {
-      const y = 390 + index * 155;
-      context.fillStyle = '#edf3ef';
-      context.roundRect(96, y, 888, 116, 18);
+      const y = 430 + index * 145;
+      const badge = badgeForPick(pick.text, index);
+      context.fillStyle = index % 2 ? '#f0f5f2' : '#e9f2ec';
+      roundedRect(context, 94, y, 892, 112, 20);
       context.fill();
-      context.fillStyle = colors[index];
+      context.fillStyle = badge.bg;
       context.beginPath();
-      context.arc(150, y + 58, 29, 0, Math.PI * 2);
+      context.arc(153, y + 56, 35, 0, Math.PI * 2);
       context.fill();
-      context.fillStyle = '#fff';
-      context.font = '700 25px Arial, sans-serif';
+      context.fillStyle = badge.fg;
+      context.font = '900 22px Arial, sans-serif';
       context.textAlign = 'center';
-      context.fillText(names[index][0], 150, y + 67);
+      context.fillText(badge.label, 153, y + 64);
       context.textAlign = 'left';
       context.fillStyle = '#123f35';
-      context.font = '700 25px Arial, sans-serif';
-      context.fillText(names[index], 204, y + 45);
+      context.font = '800 23px Arial, sans-serif';
+      context.fillText(names[index].toUpperCase(), 215, y + 43);
       context.fillStyle = pick.text ? '#315a46' : '#8a9891';
-      context.font = '500 28px Arial, sans-serif';
-      context.fillText(pick.text || 'Awaiting pick', 204, y + 82);
+      context.font = pick.text ? '700 27px Arial, sans-serif' : '600 25px Arial, sans-serif';
+      const pickText = pick.text || 'AWAITING PICK';
+      context.fillText(pickText.length > 40 ? `${pickText.slice(0, 38)}…` : pickText, 215, y + 79);
+      context.fillStyle = pick.text ? '#e39938' : '#b5c5bd';
+      roundedRect(context, 820, y + 35, 132, 40, 20);
+      context.fill();
+      context.fillStyle = pick.text ? '#5d3c0d' : '#61736b';
+      context.font = '800 17px Arial, sans-serif';
+      context.textAlign = 'center';
+      context.fillText(pick.text ? 'LOCKED IN' : 'OPEN', 886, y + 61);
+      context.textAlign = 'left';
     });
     context.fillStyle = '#123f35';
-    context.font = '700 24px Arial, sans-serif';
-    context.fillText('roomies-parlay.danielfurry.chatgpt.site', 108, 1260);
+    context.font = '900 29px Arial, sans-serif';
+    context.fillText('LOCK IT IN.', 108, 1242);
+    context.fillStyle = '#6c7c75';
+    context.font = '600 20px Arial, sans-serif';
+    context.fillText('roomies-parlay.danielfurry.chatgpt.site', 108, 1275);
   }, [week]);
 
   async function share() {
