@@ -1022,3 +1022,10 @@ footer span:first-child {
     display: none;
   }
 }
+
+.collage-preview { margin-top: 18px; }
+.collage-status { margin-top: 12px; font-size: 14px; color: #52665b; }
+@media (max-width: 640px) {
+  .share-card-panel { padding: 16px; }
+  .share-card-panel > button, .share-card-actions button { width: 100%; min-height: 48px; }
+}

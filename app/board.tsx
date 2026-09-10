@@ -1,15 +1,14 @@
 'use client';
 import SignIn from './sign-in';
 import PasswordSettings from './password-settings';
-import { useEffect, useRef, useState } from 'react';
+import ShareCard from './share-card';
+import { useEffect, useState } from 'react';
 import {
   Flag,
   ArrowUpRight,
   Check,
-  Download,
   Plus,
   LockKeyhole,
-  Share2,
   Trophy,
   Users,
   CalendarDays,
@@ -65,207 +64,6 @@ function Choice({
   );
 }
 
-const teamThemes: Array<[RegExp, string, string, string]> = [
-  [/michigan/i, '#00274c', '#ffcb05', 'M'],
-  [/ohio|osu/i, '#bb0000', '#666666', 'O'],
-  [/alabama|bama/i, '#9e1b32', '#ffffff', 'A'],
-  [/georgia|uga/i, '#ba0c2f', '#000000', 'G'],
-  [/texas(?! tech)/i, '#bf5700', '#ffffff', 'T'],
-  [/texas tech/i, '#cc0000', '#000000', 'TT'],
-  [/clemson/i, '#f56600', '#522d80', 'C'],
-  [/lsu/i, '#461d7c', '#fdd023', 'LSU'],
-  [/notre dame|nd/i, '#0c2340', '#c99700', 'ND'],
-  [/florida/i, '#0021a5', '#fa4616', 'F'],
-  [/tennessee/i, '#ff8200', '#ffffff', 'T'],
-  [/usc|southern california/i, '#990000', '#ffc72c', 'USC'],
-  [/oregon/i, '#154733', '#fee123', 'O'],
-];
-
-function badgeForPick(text: string, index: number) {
-  const theme = teamThemes.find(([pattern]) => pattern.test(text));
-  if (theme) return { bg: theme[1], fg: theme[2], label: theme[3] };
-  const words = text
-    .split(/[\/|]/)[0]
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-  const label = words.length > 1
-    ? words.slice(0, 2).map((word) => word[0]).join('').toUpperCase()
-    : (words[0]?.slice(0, 2) || names[index].slice(0, 2)).toUpperCase();
-  const fallbacks = [
-    ['#155e75', '#cffafe'],
-    ['#7c2d12', '#ffedd5'],
-    ['#581c87', '#f3e8ff'],
-    ['#166534', '#dcfce7'],
-    ['#9f1239', '#ffe4e6'],
-  ];
-  return { bg: fallbacks[index % fallbacks.length][0], fg: fallbacks[index % fallbacks.length][1], label };
-}
-
-function roundedRect(
-  context: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-) {
-  const r = Math.min(radius, width / 2, height / 2);
-  context.beginPath();
-  context.moveTo(x + r, y);
-  context.arcTo(x + width, y, x + width, y + height, r);
-  context.arcTo(x + width, y + height, x, y + height, r);
-  context.arcTo(x, y + height, x, y, r);
-  context.arcTo(x, y, x + width, y, r);
-  context.closePath();
-}
-
-function ShareCard({
-  week,
-  onClose,
-}: {
-  week: Week;
-  onClose: () => void;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const width = 1080;
-    const height = 1350;
-    const scale = window.devicePixelRatio || 1;
-    canvas.width = width * scale;
-    canvas.height = height * scale;
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    context.scale(scale, scale);
-    const background = context.createLinearGradient(0, 0, width, height);
-    background.addColorStop(0, '#073b32');
-    background.addColorStop(1, '#176653');
-    context.fillStyle = background;
-    context.fillRect(0, 0, width, height);
-    context.fillStyle = '#f5a338';
-    context.beginPath();
-    context.arc(960, 100, 230, 0, Math.PI * 2);
-    context.fill();
-    context.fillStyle = '#b6dfc7';
-    context.beginPath();
-    context.arc(35, 1300, 260, 0, Math.PI * 2);
-    context.fill();
-    context.fillStyle = '#f7faf8';
-    roundedRect(context, 48, 48, 984, 1254, 34);
-    context.fill();
-    context.fillStyle = '#123f35';
-    context.font = '900 66px Arial, sans-serif';
-    context.fillText('ROOMIES', 102, 142);
-    context.fillStyle = '#e28f2f';
-    context.fillText('PARLAY', 102, 212);
-    context.fillStyle = '#6c7c75';
-    context.font = '800 24px Arial, sans-serif';
-    context.fillText('THE WEEKLY CARD', 106, 265);
-    context.fillStyle = '#e39938';
-    roundedRect(context, 106, 286, 178, 10, 5);
-    context.fill();
-    const date = new Date(week.date + 'T12:00:00').toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
-    context.fillStyle = '#123f35';
-    context.font = '800 37px Arial, sans-serif';
-    context.fillText(date, 108, 352);
-    context.fillStyle = '#6c7c75';
-    context.font = '600 24px Arial, sans-serif';
-    const submitted = week.picks.filter((pick) => pick.text).length;
-    context.fillText(`${submitted}/5 PICKS IN  •  $${week.buyIn} BUY-IN`, 108, 392);
-    week.picks.forEach((pick, index) => {
-      const y = 430 + index * 145;
-      const badge = badgeForPick(pick.text, index);
-      context.fillStyle = index % 2 ? '#f0f5f2' : '#e9f2ec';
-      roundedRect(context, 94, y, 892, 112, 20);
-      context.fill();
-      context.fillStyle = badge.bg;
-      context.beginPath();
-      context.arc(153, y + 56, 35, 0, Math.PI * 2);
-      context.fill();
-      context.fillStyle = badge.fg;
-      context.font = '900 22px Arial, sans-serif';
-      context.textAlign = 'center';
-      context.fillText(badge.label, 153, y + 64);
-      context.textAlign = 'left';
-      context.fillStyle = '#123f35';
-      context.font = '800 23px Arial, sans-serif';
-      context.fillText(names[index].toUpperCase(), 215, y + 43);
-      context.fillStyle = pick.text ? '#315a46' : '#8a9891';
-      context.font = pick.text ? '700 27px Arial, sans-serif' : '600 25px Arial, sans-serif';
-      const pickText = pick.text || 'AWAITING PICK';
-      context.fillText(pickText.length > 40 ? `${pickText.slice(0, 38)}…` : pickText, 215, y + 79);
-      context.fillStyle = pick.text ? '#e39938' : '#b5c5bd';
-      roundedRect(context, 820, y + 35, 132, 40, 20);
-      context.fill();
-      context.fillStyle = pick.text ? '#5d3c0d' : '#61736b';
-      context.font = '800 17px Arial, sans-serif';
-      context.textAlign = 'center';
-      context.fillText(pick.text ? 'LOCKED IN' : 'OPEN', 886, y + 61);
-      context.textAlign = 'left';
-    });
-    context.fillStyle = '#123f35';
-    context.font = '900 29px Arial, sans-serif';
-    context.fillText('LOCK IT IN.', 108, 1242);
-    context.fillStyle = '#6c7c75';
-    context.font = '600 20px Arial, sans-serif';
-    context.fillText('roomies-parlay.danielfurry.chatgpt.site', 108, 1275);
-  }, [week]);
-
-  async function share() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.toBlob(async (blob) => {
-      if (!blob) return;
-      const file = new File([blob], `roomies-parlay-${week.date}.png`, {
-        type: 'image/png',
-      });
-      if (
-        navigator.share &&
-        (!navigator.canShare || navigator.canShare({ files: [file] }))
-      ) {
-        await navigator.share({ title: 'Roomies Parlay picks', files: [file] });
-        return;
-      }
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = file.name;
-      link.click();
-      URL.revokeObjectURL(link.href);
-    }, 'image/png');
-  }
-
-  return (
-    <section className="share-card-panel" aria-label="Share picks card">
-      <div className="share-card-copy">
-        <div>
-          <span className="eyebrow">READY FOR THE GROUP CHAT?</span>
-          <h2>Share this week’s card</h2>
-          <p>Export the picks as an image and drop it into iMessage.</p>
-        </div>
-        <button className="text-button" onClick={onClose} aria-label="Close share card">
-          Close
-        </button>
-      </div>
-      <canvas ref={canvasRef} className="share-card-canvas" />
-      <div className="share-card-actions">
-        <button onClick={share} type="button">
-          <Share2 size={16} /> Share image
-        </button>
-        <button className="secondary-button" onClick={share} type="button">
-          <Download size={16} /> Save image
-        </button>
-      </div>
-    </section>
-  );
-}
-
 export default function Board() {
   const [league, setLeague] = useState<League>({
     owner: '',
@@ -284,7 +82,6 @@ export default function Board() {
   const [busy, setBusy] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [pick, setPick] = useState('');
-  const [shareCardOpen, setShareCardOpen] = useState(false);
   const [newDate, setNewDate] = useState('2026-09-12');
   async function refresh() {
     try {
@@ -553,7 +350,6 @@ export default function Board() {
                                 })
                               ) {
                                 setPick('');
-                                setShareCardOpen(true);
                               }
                             }}
                           >
@@ -581,15 +377,6 @@ export default function Board() {
                       {week.picks.filter((p) => p.text).length} of 5 picks
                       submitted
                     </span>
-                    {week.picks.some((p) => p.text) && (
-                      <button
-                        className="share-trigger"
-                        onClick={() => setShareCardOpen(true)}
-                        type="button"
-                      >
-                        <Share2 size={14} /> Share card
-                      </button>
-                    )}
                     <b>
                       {settlement(week).complete
                         ? `${settlement(week).losers} losing picks · ${money(settlement(week).charge)} per loser`
@@ -597,9 +384,7 @@ export default function Board() {
                     </b>
                   </div>
                 </div>
-                {shareCardOpen && (
-                  <ShareCard week={week} onClose={() => setShareCardOpen(false)} />
-                )}
+                <ShareCard key={week.date} week={week} />
                 <div className="lower-grid">
                   <div className="payout-card">
                     <span className="eyebrow">THIS WEEK’S PAYOUT</span>
