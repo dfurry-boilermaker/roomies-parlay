@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Share2, Sparkles } from 'lucide-react';
 import { names, type Week } from '@/lib/league';
+import { cardBackground } from '@/lib/card-background';
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -25,36 +26,21 @@ function linesFor(ctx: CanvasRenderingContext2D, text: string, max: number) {
 }
 
 async function renderCard(week: Week): Promise<File> {
-  const [art, portrait] = await Promise.all([
-    loadImage('/collage-background.png'), loadImage('/horsemen-icon.png'),
-  ]);
+  const background = cardBackground(week.date);
+  const art = await loadImage(background.src);
   const canvas = document.createElement('canvas');
   canvas.width = 1080; canvas.height = 1350;
   const c = canvas.getContext('2d');
   if (!c) throw Error('Your browser could not create the card.');
-  const palettes = ['#d8ff36', '#ff78d6', '#65e9ff', '#ffb146'];
-  const accent = palettes[Math.floor(Math.random() * palettes.length)];
-  const rand = (a: number, b: number) => a + Math.random() * (b - a);
+  const accent = background.accent;
   const cover = (img: HTMLImageElement, x: number, y: number, w: number, h: number) => {
     const scale = Math.max(w / img.width, h / img.height);
     const sw = w / scale, sh = h / scale;
     c.drawImage(img, (img.width-sw)/2, (img.height-sh)/2, sw, sh, x, y, w, h);
   };
   cover(art, 0, 0, 1080, 1350);
-  // Shuffle photographic fragments into the top montage on every generation.
-  for (let i = 0; i < 4; i++) {
-    c.save(); c.translate(110 + i * 270, rand(100, 240)); c.rotate(rand(-.28, .28));
-    c.globalAlpha = .65; c.globalCompositeOperation = i % 2 ? 'screen' : 'source-over';
-    const w = rand(190, 280);
-    c.drawImage(art, rand(0, art.width*.65), rand(0, art.height*.3), art.width*.3, art.height*.24, -w/2, -w/2, w, w);
-    c.restore();
-  }
-  c.save(); c.translate(880, 245); c.rotate(rand(-.18, .18));
-  c.shadowColor = accent; c.shadowBlur = 24;
-  c.fillStyle = '#fff'; c.fillRect(-99, -114, 198, 224); c.shadowBlur = 0;
-  cover(portrait, -89, -104, 178, 195); c.restore();
   const veil = c.createLinearGradient(0, 0, 0, 1350);
-  veil.addColorStop(0, '#09051d55'); veil.addColorStop(.34, '#09051dd9'); veil.addColorStop(1, '#09051df2');
+  veil.addColorStop(0, '#09051d15'); veil.addColorStop(.4, '#09051d22'); veil.addColorStop(1, '#09051d66');
   c.fillStyle = veil; c.fillRect(0, 0, 1080, 1350);
   c.save(); c.translate(66, 94); c.rotate(-.035);
   c.fillStyle = accent; c.fillRect(0, 0, 484, 48);
@@ -69,8 +55,8 @@ async function renderCard(week: Week): Promise<File> {
   c.fillText(`${week.picks.filter(p => p.text.trim()).length}/5 PICKS IN`, 1014, 415); c.textAlign = 'left';
   week.picks.forEach((pick, i) => {
     const y = 454 + i * 153;
-    c.save(); c.translate(540, y+67); c.rotate(rand(-.011,.011));
-    c.fillStyle = '#0f1125ed'; c.fillRect(-474,-67,948,134);
+    c.save(); c.translate(540, y+67); c.rotate(i % 2 ? .008 : -.008);
+    c.fillStyle = '#0f1125d9'; c.fillRect(-474,-67,948,134);
     c.fillStyle = accent; c.fillRect(-474,-67,6,134);
     c.globalAlpha = .12; c.font = '900 110px Arial'; c.fillText(`0${i+1}`, 319,37); c.globalAlpha = 1;
     c.fillStyle = accent; c.font = '800 22px Arial'; c.fillText(names[i].toUpperCase(), -450,-33);
@@ -81,8 +67,6 @@ async function renderCard(week: Week): Promise<File> {
     lines.forEach((line,j) => c.fillText(line, -450, 8+j*(size+5)));
     c.restore();
   });
-  c.fillStyle = accent; c.font = '900 28px Arial'; c.fillText('FIVE FRIENDS. ONE QUESTIONABLE MASTERPIECE.', 66, 1261);
-  c.fillStyle = '#ccc6df'; c.font = '500 20px Arial'; c.fillText('roomies-parlay.danielfurry.chatgpt.site',66,1305);
   const blob = await new Promise<Blob>((resolve,reject) => canvas.toBlob(b => b ? resolve(b) : reject(Error('Could not create the image.')), 'image/png'));
   return new File([blob], `roomies-parlay-${week.date}.png`, {type:'image/png'});
 }
