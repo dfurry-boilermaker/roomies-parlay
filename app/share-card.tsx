@@ -58,7 +58,6 @@ async function renderCard(week: Week): Promise<File> {
     c.save(); c.translate(540, y+67); c.rotate(i % 2 ? .008 : -.008);
     c.fillStyle = '#0f1125d9'; c.fillRect(-474,-67,948,134);
     c.fillStyle = accent; c.fillRect(-474,-67,6,134);
-    c.globalAlpha = .12; c.font = '900 110px Arial'; c.fillText(`0${i+1}`, 319,37); c.globalAlpha = 1;
     c.fillStyle = accent; c.font = '800 22px Arial'; c.fillText(names[i].toUpperCase(), -450,-33);
     const text = pick.text.trim() || 'Awaiting pick';
     let size = 34; let lines: string[] = [];
