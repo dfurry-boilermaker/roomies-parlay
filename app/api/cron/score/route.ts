@@ -19,9 +19,13 @@ type EspnEvent = {
 };
 
 async function scoreboard(date: string): Promise<FinalGame[]> {
-  const url = `https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=${date.replaceAll('-', '')}&limit=1000`;
+  const query = `dates=${date.replaceAll('-', '')}&limit=1000&region=us&lang=en`;
+  const urls = [
+    `https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?${query}`,
+    `https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?${query}`,
+  ];
   let lastError: unknown;
-  for (let attempt = 0; attempt < 3; attempt += 1) {
+  for (const url of urls) {
     try {
       const response = await fetch(url, {
         headers: {
@@ -45,10 +49,7 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
           away: { name: away.team.displayName, shortName: away.team.shortDisplayName, abbreviation: away.team.abbreviation, score: awayScore },
         }];
       });
-    } catch (error) {
-      lastError = error;
-      if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)));
-    }
+    } catch (error) { lastError = error; }
   }
   throw lastError instanceof Error ? lastError : Error('Scoreboard provider is unavailable.');
 }
