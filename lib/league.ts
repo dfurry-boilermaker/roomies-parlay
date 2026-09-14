@@ -13,6 +13,7 @@ export type League = {
   emails: string[];
   weeks: Week[];
   notifiedWeeks?: string[];
+  payoutRequestedWeeks?: string[];
 };
 export function settlement(w: Week) {
   const complete = w.picks.every((p) => p.text && p.result !== 'pending');

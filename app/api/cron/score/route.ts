@@ -9,6 +9,7 @@ const config = env as unknown as { ROOMIES_CRON_SECRET?: string };
 
 type EspnEvent = {
   id?: string;
+  date?: string;
   status?: { type?: { completed?: boolean } };
   competitions?: Array<{
     competitors?: Array<{
@@ -19,7 +20,7 @@ type EspnEvent = {
   }>;
 };
 
-async function scoreboard(date: string): Promise<FinalGame[]> {
+async function scoreboard(date: string): Promise<{ games: FinalGame[]; latestStart: number | null }> {
   const query = `dates=${date.replaceAll('-', '')}&limit=1000&region=us&lang=en`;
   const urls = [
     `https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?${query}`,
@@ -36,6 +37,12 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
       });
       if (!response.ok) throw Error(`Scoreboard returned ${response.status}.`);
       const body = (await response.json()) as { events?: EspnEvent[] };
+      const latestStart = Math.max(
+        ...(body.events || [])
+          .map((event) => (event.date ? Date.parse(event.date) : NaN))
+          .filter(Number.isFinite),
+        0,
+      ) || null;
       const games: Array<FinalGame & { eventId?: string }> = (body.events || []).flatMap((event) => {
     const competitors = event.competitions?.[0]?.competitors || [];
     const home = competitors.find((team) => team.homeAway === 'home');
@@ -51,7 +58,7 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
           away: { name: away.team.displayName, shortName: away.team.shortDisplayName, abbreviation: away.team.abbreviation, score: awayScore },
         }];
       });
-      return Promise.all(games.map(async ({ eventId, ...game }) => {
+      const settledGames = await Promise.all(games.map(async ({ eventId, ...game }) => {
         if (!eventId || !game.completed) return game;
         try {
           const summary = await fetch(
@@ -64,6 +71,7 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
           return typeof closingTotal === 'number' ? { ...game, closingTotal } : game;
         } catch { return game; }
       }));
+      return { games: settledGames, latestStart };
     } catch (error) { lastError = error; }
   }
   throw lastError instanceof Error ? lastError : Error('Scoreboard provider is unavailable.');
@@ -90,7 +98,10 @@ export async function POST(request: Request) {
       if (requestedDate && week.date !== requestedDate) continue;
       if (week.date > today || week.picks.every((pick) => pick.result !== 'pending') || week.picks.some((pick) => !pick.text)) continue;
       stage = `scoring ${week.date}`;
-      const settled = settleAvailablePicks(week, await scoreboard(week.date));
+      const board = await scoreboard(week.date);
+      const readyAfter = board.latestStart ? board.latestStart + 5 * 60 * 60 * 1000 : 0;
+      if (readyAfter && Date.now() < readyAfter) continue;
+      const settled = settleAvailablePicks(week, board.games);
       if (!settled.graded.length) continue;
       week.picks = settled.picks;
       if (settled.complete) week.locked = true;

@@ -2,8 +2,9 @@ name: Score Roomies Parlay
 
 on:
   schedule:
-    - cron: '15 17 * * 0'
-    - cron: '15 16 * * 1'
+    # The API checks the latest kickoff from ESPN and waits five hours after it.
+    # Running hourly lets that cutoff happen at the right time each week.
+    - cron: '7 * * * *'
   workflow_dispatch:
     inputs:
       date:
