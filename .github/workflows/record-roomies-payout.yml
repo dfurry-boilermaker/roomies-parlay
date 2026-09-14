@@ -1,0 +1,43 @@
+name: Record Roomies payout reply
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+
+jobs:
+  record:
+    if: >-
+      !github.event.issue.pull_request &&
+      github.event.comment.user.login == 'dfurry-boilermaker' &&
+      startsWith(github.event.issue.title, '[Roomies] Payout needed:')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record payout amount
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROOMIES_CRON_SECRET: ${{ secrets.ROOMIES_CRON_SECRET }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          date=$(printf '%s' "$ISSUE_TITLE" | sed -n 's/^\[Roomies\] Payout needed: //p')
+          amount=$(printf '%s' "$COMMENT_BODY" | grep -Eo '\$?[0-9]+([.][0-9]{1,2})?' | head -1 | tr -d '$')
+          if ! printf '%s' "$date" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || ! printf '%s' "$amount" | grep -Eq '^[0-9]+([.][0-9]{1,2})?$'; then
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body 'I could not read a payout amount. Reply with a number such as `128.10`.'
+            exit 0
+          fi
+          payload=$(jq -n --arg date "$date" --argjson payout "$amount" '{date: $date, payout: $payout}')
+          response=$(curl --fail-with-body --silent --show-error --request POST \
+            --header "Authorization: Bearer $ROOMIES_CRON_SECRET" \
+            --header 'Content-Type: application/json' \
+            --data "$payload" \
+            https://roomies-parlay.danielfurry.chatgpt.site/api/cron/payout)
+          if [ "$(jq -r '.ok // false' <<< "$response")" != 'true' ]; then
+            echo "$response"
+            exit 1
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Recorded $amount per person for $date."
+          gh issue close "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY"

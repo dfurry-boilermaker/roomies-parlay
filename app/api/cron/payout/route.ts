@@ -40,7 +40,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   if (!authorized(request)) return json({ error: 'Unauthorized.' }, 401);
   try {
-    const body = (await request.json()) as { date?: unknown };
+    const body = (await request.json()) as { date?: unknown; payout?: unknown };
     if (typeof body.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(body.date))
       return json({ error: 'A valid week date is required.' }, 400);
     const row = await database()
@@ -52,8 +52,14 @@ export async function POST(request: Request) {
     const week = league.weeks.find((candidate) => candidate.date === body.date);
     if (!week || !week.picks.every((pick) => pick.text && pick.result === 'win'))
       return json({ error: 'That week is not a completed perfect week.' }, 409);
+    if (body.payout !== undefined) {
+      if (typeof body.payout !== 'number' || !Number.isFinite(body.payout) || body.payout < 0 || body.payout > 200000)
+        return json({ error: 'Payout must be a valid amount.' }, 400);
+      week.payout = body.payout;
+    }
     const requested = new Set(league.payoutRequestedWeeks || []);
-    if (requested.has(body.date)) return json({ ok: true, alreadyNotified: true });
+    if (requested.has(body.date) && body.payout === undefined)
+      return json({ ok: true, alreadyNotified: true });
     requested.add(body.date);
     league.payoutRequestedWeeks = [...requested].sort();
     const updated = await database()
