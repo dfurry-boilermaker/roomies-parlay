@@ -8,6 +8,7 @@ const json = (data: unknown, status = 200) => Response.json(data, { status });
 const config = env as unknown as { ROOMIES_CRON_SECRET?: string };
 
 type EspnEvent = {
+  id?: string;
   status?: { type?: { completed?: boolean } };
   competitions?: Array<{
     competitors?: Array<{
@@ -35,7 +36,7 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
       });
       if (!response.ok) throw Error(`Scoreboard returned ${response.status}.`);
       const body = (await response.json()) as { events?: EspnEvent[] };
-      return (body.events || []).flatMap((event) => {
+      const games: Array<FinalGame & { eventId?: string }> = (body.events || []).flatMap((event) => {
     const competitors = event.competitions?.[0]?.competitors || [];
     const home = competitors.find((team) => team.homeAway === 'home');
     const away = competitors.find((team) => team.homeAway === 'away');
@@ -44,11 +45,25 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
     const awayScore = Number(away.score);
     if (!Number.isFinite(homeScore) || !Number.isFinite(awayScore)) return [];
         return [{
+          eventId: event.id,
           completed: Boolean(event.status?.type?.completed),
           home: { name: home.team.displayName, shortName: home.team.shortDisplayName, abbreviation: home.team.abbreviation, score: homeScore },
           away: { name: away.team.displayName, shortName: away.team.shortDisplayName, abbreviation: away.team.abbreviation, score: awayScore },
         }];
       });
+      return Promise.all(games.map(async ({ eventId, ...game }) => {
+        if (!eventId || !game.completed) return game;
+        try {
+          const summary = await fetch(
+            `https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=${eventId}`,
+            { headers: { Accept: 'application/json', 'User-Agent': 'Roomies-Parlay-Scorer/1.0' } },
+          );
+          if (!summary.ok) return game;
+          const data = (await summary.json()) as { pickcenter?: Array<{ overUnder?: number }> };
+          const closingTotal = data.pickcenter?.[0]?.overUnder;
+          return typeof closingTotal === 'number' ? { ...game, closingTotal } : game;
+        } catch { return game; }
+      }));
     } catch (error) { lastError = error; }
   }
   throw lastError instanceof Error ? lastError : Error('Scoreboard provider is unavailable.');

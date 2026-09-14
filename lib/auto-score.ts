@@ -1,7 +1,12 @@
 import type { Pick, Result, Week } from './league';
 
 type TeamScore = { name: string; shortName?: string; abbreviation?: string; score: number };
-export type FinalGame = { home: TeamScore; away: TeamScore; completed: boolean };
+export type FinalGame = {
+  home: TeamScore;
+  away: TeamScore;
+  completed: boolean;
+  closingTotal?: number;
+};
 
 const normalize = (value: string) =>
   value
@@ -71,6 +76,20 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
     if (!game) return null;
     const difference = game.home.score + game.away.score - Number(lineText);
     return resultForComparison(/^o|over$/i.test(direction) ? difference : -difference);
+  }
+
+  const shorthandTotal = cleaned.match(/^(.+?)\s+(.+?)\s+(over|under)$/i);
+  if (shorthandTotal) {
+    const [, first, second, direction] = shorthandTotal;
+    const game = games.find(
+      (g) =>
+        g.completed &&
+        ((teamMatches(first, g.home) && teamMatches(second, g.away)) ||
+          (teamMatches(first, g.away) && teamMatches(second, g.home))),
+    );
+    if (!game || game.closingTotal === undefined) return null;
+    const difference = game.home.score + game.away.score - game.closingTotal;
+    return resultForComparison(/^over$/i.test(direction) ? difference : -difference);
   }
 
   const spread = cleaned.match(/^(.+?)\s+([+-][0-9]+(?:\.[0-9]+)?)$/);

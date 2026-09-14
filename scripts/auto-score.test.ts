@@ -31,3 +31,12 @@ test('scores straight-up, money line, and money line wording', () => {
   assert.equal(gradePick('TCU Money Line', games), 'win');
   assert.equal(gradePick('UNC', games), 'loss');
 });
+
+test('scores shorthand totals against the closing line and ignores notes', () => {
+  const game = [{
+    ...games[0],
+    closingTotal: 45.5,
+  }];
+  assert.equal(gradePick('TCU UNC Over', game), 'win');
+  assert.equal(gradePick('TCU -3.5 (or spread if moves)', game), 'win');
+});
