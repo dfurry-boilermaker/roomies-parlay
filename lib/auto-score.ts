@@ -28,7 +28,7 @@ function resultForComparison(value: number): Result {
   return value > 0 ? 'win' : value < 0 ? 'loss' : 'push';
 }
 
-/** Grades the common Roomies entry styles: "Team -3.5" and "Team A/Team B U47.5". */
+/** Grades spreads, totals, and straight-up entries such as "Team", "Team ML", or "Team Money Line". */
 export function gradePick(text: string, games: FinalGame[]): Result | null {
   const total = text.trim().match(/^(.+?)\s*\/\s*(.+?)\s+((?:o|over|u|under))\s*([0-9]+(?:\.[0-9]+)?)$/i);
   if (total) {
@@ -45,8 +45,22 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
   }
 
   const spread = text.trim().match(/^(.+?)\s+([+-][0-9]+(?:\.[0-9]+)?)$/);
-  if (!spread) return null;
-  const [, pickedTeam, lineText] = spread;
+  if (spread) {
+    const [, pickedTeam, lineText] = spread;
+    const matches = games.filter(
+      (g) => g.completed && (teamMatches(pickedTeam, g.home) || teamMatches(pickedTeam, g.away)),
+    );
+    if (matches.length !== 1) return null;
+    const game = matches[0];
+    const isHome = teamMatches(pickedTeam, game.home);
+    const pickedScore = isHome ? game.home.score : game.away.score;
+    const opponentScore = isHome ? game.away.score : game.home.score;
+    return resultForComparison(pickedScore + Number(lineText) - opponentScore);
+  }
+
+  const straightUp = text.trim().match(/^(.+?)(?:\s+(?:ml|money\s+line))?$/i);
+  if (!straightUp) return null;
+  const [, pickedTeam] = straightUp;
   const matches = games.filter(
     (g) => g.completed && (teamMatches(pickedTeam, g.home) || teamMatches(pickedTeam, g.away)),
   );
@@ -55,7 +69,7 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
   const isHome = teamMatches(pickedTeam, game.home);
   const pickedScore = isHome ? game.home.score : game.away.score;
   const opponentScore = isHome ? game.away.score : game.home.score;
-  return resultForComparison(pickedScore + Number(lineText) - opponentScore);
+  return resultForComparison(pickedScore - opponentScore);
 }
 
 export function settleAvailablePicks(week: Week, games: FinalGame[]) {

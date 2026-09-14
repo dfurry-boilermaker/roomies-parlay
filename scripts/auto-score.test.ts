@@ -24,3 +24,10 @@ test('scores a spread and returns null when the game is unknown', () => {
   assert.equal(gradePick('TCU -3.5', games), 'win');
   assert.equal(gradePick('Virginia -3.5', games), null);
 });
+
+test('scores straight-up, money line, and money line wording', () => {
+  assert.equal(gradePick('TCU', games), 'win');
+  assert.equal(gradePick('TCU ML', games), 'win');
+  assert.equal(gradePick('TCU Money Line', games), 'win');
+  assert.equal(gradePick('UNC', games), 'loss');
+});
