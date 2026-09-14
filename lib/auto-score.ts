@@ -24,6 +24,31 @@ const teamMatches = (candidate: string, team: TeamScore) => {
     .some((value) => value === wanted || value.includes(wanted) || wanted.includes(value));
 };
 
+const teamMatchStrength = (candidate: string, team: TeamScore) => {
+  const wanted = aliases[normalize(candidate)] || normalize(candidate);
+  const values = [team.name, team.shortName, team.abbreviation]
+    .filter(Boolean)
+    .map((value) => normalize(value!));
+  if (values.some((value) => value === wanted)) return 2;
+  if (values.some((value) => value.includes(wanted) || wanted.includes(value))) return 1;
+  return 0;
+};
+
+const bestTeamGames = (candidate: string, games: FinalGame[]) => {
+  const matches = games
+    .filter((g) => g.completed)
+    .map((game) => ({
+      game,
+      strength: Math.max(
+        teamMatchStrength(candidate, game.home),
+        teamMatchStrength(candidate, game.away),
+      ),
+    }))
+    .filter(({ strength }) => strength > 0);
+  const best = Math.max(...matches.map(({ strength }) => strength), 0);
+  return matches.filter(({ strength }) => strength === best).map(({ game }) => game);
+};
+
 function resultForComparison(value: number): Result {
   return value > 0 ? 'win' : value < 0 ? 'loss' : 'push';
 }
@@ -51,9 +76,7 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
   const spread = cleaned.match(/^(.+?)\s+([+-][0-9]+(?:\.[0-9]+)?)$/);
   if (spread) {
     const [, pickedTeam, lineText] = spread;
-    const matches = games.filter(
-      (g) => g.completed && (teamMatches(pickedTeam, g.home) || teamMatches(pickedTeam, g.away)),
-    );
+    const matches = bestTeamGames(pickedTeam, games);
     if (matches.length !== 1) return null;
     const game = matches[0];
     const isHome = teamMatches(pickedTeam, game.home);
@@ -65,9 +88,7 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
   const straightUp = cleaned.match(/^(.+?)(?:\s+(?:ml|money\s+line))?$/i);
   if (!straightUp) return null;
   const [, pickedTeam] = straightUp;
-  const matches = games.filter(
-    (g) => g.completed && (teamMatches(pickedTeam, g.home) || teamMatches(pickedTeam, g.away)),
-  );
+  const matches = bestTeamGames(pickedTeam, games);
   if (matches.length !== 1) return null;
   const game = matches[0];
   const isHome = teamMatches(pickedTeam, game.home);
