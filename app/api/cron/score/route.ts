@@ -57,6 +57,7 @@ export async function POST(request: Request) {
   const expected = config.ROOMIES_CRON_SECRET;
   if (!expected || request.headers.get('authorization') !== `Bearer ${expected}`)
     return json({ error: 'Unauthorized.' }, 401);
+  let stage = 'reading league';
   try {
     const row = await database()
       .prepare('SELECT data, revision FROM league_state WHERE id = ?')
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
     const report: Array<{ date: string; graded: number; complete: boolean }> = [];
     for (const week of league.weeks) {
       if (week.date > today || week.picks.every((pick) => pick.result !== 'pending') || week.picks.some((pick) => !pick.text)) continue;
+      stage = `scoring ${week.date}`;
       const settled = settleAvailablePicks(week, await scoreboard(week.date));
       if (!settled.graded.length) continue;
       week.picks = settled.picks;
@@ -92,6 +94,7 @@ export async function POST(request: Request) {
       addedNextWeek = true;
     }
     if (report.length || addedNextWeek) {
+      stage = 'saving league';
       const updated = await database()
         .prepare('UPDATE league_state SET data = ?, revision = revision + 1 WHERE id = ? AND revision = ?')
         .bind(JSON.stringify(league), 'club', row.revision)
@@ -99,7 +102,11 @@ export async function POST(request: Request) {
       if (!updated.meta.changes) return json({ error: 'League changed; run again.' }, 409);
     }
     return json({ ok: true, weeks: report, addedNextWeek, nextWeek: nextDate, note: 'Payouts remain the commissioner-entered total because sportsbooks do not expose the parlay payout.' });
-  } catch {
-    return json({ error: 'Automatic scoring could not reach the scoreboard.' }, 503);
+  } catch (error) {
+    return json({
+      error: 'Automatic scoring could not complete.',
+      stage,
+      detail: error instanceof Error ? error.message : String(error),
+    }, 503);
   }
 }
