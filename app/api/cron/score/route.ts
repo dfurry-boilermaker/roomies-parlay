@@ -60,6 +60,9 @@ export async function POST(request: Request) {
     return json({ error: 'Unauthorized.' }, 401);
   let stage = 'reading league';
   try {
+    const requestedDate = new URL(request.url).searchParams.get('date');
+    if (requestedDate && !/^\d{4}-\d{2}-\d{2}$/.test(requestedDate))
+      return json({ error: 'Date must use YYYY-MM-DD.' }, 400);
     const row = await database()
       .prepare('SELECT data, revision FROM league_state WHERE id = ?')
       .bind('club')
@@ -69,6 +72,7 @@ export async function POST(request: Request) {
     const today = new Date().toISOString().slice(0, 10);
     const report: Array<{ date: string; graded: number; complete: boolean }> = [];
     for (const week of league.weeks) {
+      if (requestedDate && week.date !== requestedDate) continue;
       if (week.date > today || week.picks.every((pick) => pick.result !== 'pending') || week.picks.some((pick) => !pick.text)) continue;
       stage = `scoring ${week.date}`;
       const settled = settleAvailablePicks(week, await scoreboard(week.date));

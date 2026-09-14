@@ -30,7 +30,11 @@ function resultForComparison(value: number): Result {
 
 /** Grades spreads, totals, and straight-up entries such as "Team", "Team ML", or "Team Money Line". */
 export function gradePick(text: string, games: FinalGame[]): Result | null {
-  const total = text.trim().match(/^(.+?)\s*\/\s*(.+?)\s+((?:o|over|u|under))\s*([0-9]+(?:\.[0-9]+)?)$/i);
+  // Members sometimes add a note after the market (for example, "or spread
+  // if moves"). It is guidance for the person placing the bet, not part of
+  // the market that needs to be graded.
+  const cleaned = text.trim().replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const total = cleaned.match(/^(.+?)\s*\/\s*(.+?)\s+((?:o|over|u|under))\s*([0-9]+(?:\.[0-9]+)?)$/i);
   if (total) {
     const [, first, second, direction, lineText] = total;
     const game = games.find(
@@ -44,7 +48,7 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
     return resultForComparison(/^o|over$/i.test(direction) ? difference : -difference);
   }
 
-  const spread = text.trim().match(/^(.+?)\s+([+-][0-9]+(?:\.[0-9]+)?)$/);
+  const spread = cleaned.match(/^(.+?)\s+([+-][0-9]+(?:\.[0-9]+)?)$/);
   if (spread) {
     const [, pickedTeam, lineText] = spread;
     const matches = games.filter(
@@ -58,7 +62,7 @@ export function gradePick(text: string, games: FinalGame[]): Result | null {
     return resultForComparison(pickedScore + Number(lineText) - opponentScore);
   }
 
-  const straightUp = text.trim().match(/^(.+?)(?:\s+(?:ml|money\s+line))?$/i);
+  const straightUp = cleaned.match(/^(.+?)(?:\s+(?:ml|money\s+line))?$/i);
   if (!straightUp) return null;
   const [, pickedTeam] = straightUp;
   const matches = games.filter(

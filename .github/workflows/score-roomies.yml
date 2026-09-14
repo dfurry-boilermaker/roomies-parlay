@@ -5,6 +5,11 @@ on:
     - cron: '15 17 * * 0'
     - cron: '15 16 * * 1'
   workflow_dispatch:
+    inputs:
+      date:
+        description: 'Optional Saturday to score (YYYY-MM-DD)'
+        required: false
+        type: string
 
 jobs:
   score:
@@ -13,11 +18,14 @@ jobs:
       - name: Grade completed college football games
         env:
           ROOMIES_CRON_SECRET: ${{ secrets.ROOMIES_CRON_SECRET }}
+          SCORE_DATE: ${{ inputs.date }}
         run: |
+          endpoint="https://roomies-parlay.danielfurry.chatgpt.site/api/cron/score"
+          if [ -n "$SCORE_DATE" ]; then endpoint="$endpoint?date=$SCORE_DATE"; fi
           for attempt in 1 2 3; do
             if curl --fail-with-body --request POST \
               --header "Authorization: Bearer $ROOMIES_CRON_SECRET" \
-              https://roomies-parlay.danielfurry.chatgpt.site/api/cron/score; then
+              "$endpoint"; then
               exit 0
             fi
             echo "Scoring attempt $attempt failed; retrying in 20 seconds."
