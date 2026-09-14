@@ -19,13 +19,19 @@ type EspnEvent = {
 };
 
 async function scoreboard(date: string): Promise<FinalGame[]> {
-  const response = await fetch(
-    `https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=${date.replaceAll('-', '')}&limit=1000`,
-    { headers: { Accept: 'application/json' } },
-  );
-  if (!response.ok) throw Error('Scoreboard provider is unavailable.');
-  const body = (await response.json()) as { events?: EspnEvent[] };
-  return (body.events || []).flatMap((event) => {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=${date.replaceAll('-', '')}&limit=1000`;
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': 'Roomies-Parlay-Scorer/1.0',
+        },
+      });
+      if (!response.ok) throw Error(`Scoreboard returned ${response.status}.`);
+      const body = (await response.json()) as { events?: EspnEvent[] };
+      return (body.events || []).flatMap((event) => {
     const competitors = event.competitions?.[0]?.competitors || [];
     const home = competitors.find((team) => team.homeAway === 'home');
     const away = competitors.find((team) => team.homeAway === 'away');
@@ -33,12 +39,18 @@ async function scoreboard(date: string): Promise<FinalGame[]> {
     const homeScore = Number(home.score);
     const awayScore = Number(away.score);
     if (!Number.isFinite(homeScore) || !Number.isFinite(awayScore)) return [];
-    return [{
-      completed: Boolean(event.status?.type?.completed),
-      home: { name: home.team.displayName, shortName: home.team.shortDisplayName, abbreviation: home.team.abbreviation, score: homeScore },
-      away: { name: away.team.displayName, shortName: away.team.shortDisplayName, abbreviation: away.team.abbreviation, score: awayScore },
-    }];
-  });
+        return [{
+          completed: Boolean(event.status?.type?.completed),
+          home: { name: home.team.displayName, shortName: home.team.shortDisplayName, abbreviation: home.team.abbreviation, score: homeScore },
+          away: { name: away.team.displayName, shortName: away.team.shortDisplayName, abbreviation: away.team.abbreviation, score: awayScore },
+        }];
+      });
+    } catch (error) {
+      lastError = error;
+      if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)));
+    }
+  }
+  throw lastError instanceof Error ? lastError : Error('Scoreboard provider is unavailable.');
 }
 
 export async function POST(request: Request) {
